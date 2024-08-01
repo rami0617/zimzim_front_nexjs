@@ -1,0 +1,19 @@
+{
+  "name": "zimzim",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rami0617/zimzim.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rami0617/zimzim/issues"
+  },
+  "homepage": "https://github.com/rami0617/zimzim#readme"
+}
