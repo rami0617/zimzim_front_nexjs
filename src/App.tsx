@@ -1,7 +1,12 @@
-import React from "react";
+import React from 'react';
+import { Outlet } from 'react-router-dom';
 
 const App = () => {
-  return <div></div>;
+  return (
+    <main className="font-roboto">
+      <Outlet />
+    </main>
+  );
 };
 
 export default App;
