@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
+
+import useInput from '#/hooks/useInput';
 
 import MailIcon from '#assets/icon/mail_outline.svg?react';
 import LockIcon from '#assets/icon/lock.svg?react';
 
 const LoginForm = () => {
-  const [id, setId] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const { value: id, onChange: idOnchange } = useInput<string>('');
+  const { value: password, onChange: passwordOnchange } = useInput<string>('');
 
-  const handleLogin = () => {
+  const handleLogin = (event: React.FormEvent) => {
+    event.preventDefault();
+
     if (id === '') {
       alert('아이디를 입력해주세요');
     } else if (password === '') {
@@ -22,9 +26,9 @@ const LoginForm = () => {
     <form className="flex flex-col gap-6" onSubmit={handleLogin}>
       <div className="relative w-full">
         <input
-          type="id"
+          type="text"
           className="border-[1px] border-[#9E9E9E] rounded-lg h-[48px] w-full pl-11"
-          onChange={(e) => setId(e.target.value)}
+          onChange={idOnchange}
           placeholder="Enter your ID"
           autoComplete="username"
         />
@@ -36,7 +40,7 @@ const LoginForm = () => {
         <input
           type="password"
           className="border-[1px] border-[#9E9E9E] rounded-lg h-[48px] w-full pl-11 "
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={passwordOnchange}
           placeholder="Enter your password"
           autoComplete="current-password"
         />
