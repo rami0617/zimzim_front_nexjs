@@ -29,30 +29,30 @@ const LoginForm = () => {
       <div className="relative w-full">
         <input
           type="text"
-          className="border-[1px] border-[#9E9E9E] rounded-lg h-[48px] w-full pl-11"
+          className="input-login"
           onChange={idOnchange}
           placeholder="Enter your ID"
           autoComplete="username"
         />
-        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-          <MailIcon className="text-[#9E9E9E]" />
+        <div className="input-login-icon">
+          <MailIcon className="text-gray-dark" />
         </div>
       </div>
       <div className="relative w-full">
         <input
           type="password"
-          className="border-[1px] border-[#9E9E9E] rounded-lg h-[48px] w-full pl-11 "
+          className="input-login"
           onChange={passwordOnchange}
           placeholder="Enter your password"
           autoComplete="current-password"
         />
-        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-          <LockIcon className="text-[#9E9E9E]" />
+        <div className="input-login-icon">
+          <LockIcon className="text-gray-dark" />
         </div>
       </div>
       <Button
         type="submit"
-        className="bg-[#4B81FF] h-[52px] w-full rounded-lg text-white font-bold text-[24px]"
+        className="bg-primary h-14 w-full rounded-lg text-white font-bold text-2xl border-1 border-gray-light"
       >
         Login
       </Button>
