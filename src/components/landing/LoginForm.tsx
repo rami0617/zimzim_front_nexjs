@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Button from '#components/common/button/Button';
+
 import useInput from '#/hooks/useInput';
 
 import MailIcon from '#assets/icon/mail_outline.svg?react';
@@ -48,12 +50,12 @@ const LoginForm = () => {
           <LockIcon className="text-[#9E9E9E]" />
         </div>
       </div>
-      <button
+      <Button
         type="submit"
         className="bg-[#4B81FF] h-[52px] w-full rounded-lg text-white font-bold text-[24px]"
       >
         Login
-      </button>
+      </Button>
     </form>
   );
 };
