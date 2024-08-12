@@ -12,8 +12,11 @@
     "jsx": "react",
     "baseUrl": ".",
     "paths": {
-      "#/*": ["./src/*"]
+      "#/*": ["src/*"],
+      "#components/*": ["src/components/*"],
+      "#assets/*": ["src/assets/*"]
     }
   },
-  "include": ["src", "vite.config.ts"]
+  "include": ["src", "vite.config.ts"],
+  "files": ["src/custom.d.ts"]
 }
