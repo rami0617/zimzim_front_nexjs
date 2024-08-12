@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Button from '#components/common/button/Button';
+import Input from '#components/common/input/Input';
 
 import useInput from '#/hooks/useInput';
 
@@ -26,30 +27,27 @@ const LoginForm = () => {
 
   return (
     <form className="flex flex-col gap-6" onSubmit={handleLogin}>
-      <div className="relative w-full">
-        <input
-          type="text"
-          className="input-login"
-          onChange={idOnchange}
-          placeholder="Enter your ID"
-          autoComplete="username"
-        />
-        <div className="input-login-icon">
+      <Input
+        onChange={idOnchange}
+        placeholder="Enter your ID"
+        autoComplete="username"
+      >
+        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
           <MailIcon className="text-gray-dark" />
         </div>
-      </div>
-      <div className="relative w-full">
-        <input
-          type="password"
-          className="input-login"
-          onChange={passwordOnchange}
-          placeholder="Enter your password"
-          autoComplete="current-password"
-        />
-        <div className="input-login-icon">
+      </Input>
+
+      <Input
+        type="password"
+        onChange={passwordOnchange}
+        placeholder="Enter your password"
+        autoComplete="current-password"
+      >
+        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
           <LockIcon className="text-gray-dark" />
         </div>
-      </div>
+      </Input>
+
       <Button
         type="submit"
         className="bg-primary h-14 w-full rounded-lg text-white font-bold text-2xl border-1 border-gray-light"
