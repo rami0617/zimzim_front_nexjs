@@ -52,7 +52,7 @@ const LoginForm = () => {
         type="submit"
         className="bg-primary h-14 w-full rounded-lg text-white font-bold text-2xl border-1 border-gray-light"
       >
-        Login
+        Sign In
       </Button>
     </form>
   );

@@ -1,15 +1,14 @@
 import React from 'react';
 
-import LandingHeader from '#/components/landing/LandingHeader';
 import LoginForm from '#/components/landing/LoginForm';
 import SocialLoginButton from '#/components/landing/SocialLoginButton';
 import SignUpLink from '#/components/landing/SignUpLink';
+import CommonLayout from '#/layout/CommonLayout';
+import ContentBox from '#/components/common/ContentBox';
 
 const Landing = () => {
   return (
-    <div className="w-screen h-screen bg-gradient-to-br from-bg-light to-bg-dark px-16 py-14">
-      <LandingHeader />
-
+    <CommonLayout>
       <main className="flex flex-row h-full justify-between px-24">
         <div className="flex flex-col relative h-full justify-end pb-16 gap-10">
           <div className="flex flex-row relative">
@@ -25,7 +24,7 @@ const Landing = () => {
           </div>
         </div>
 
-        <div className="flex flex-col justify-between gap-12 bg-white w-[45%] rounded-t-2xl px-8 py-16 border-1 border-gray-light">
+        <ContentBox className="rounded-t-2xl gap-12  w-[45%]">
           <p className="text-center text-2xl">Welcome back to the ZIMZIM</p>
 
           <div className="flex flex-col gap-8">
@@ -36,9 +35,9 @@ const Landing = () => {
           <div className="text-center">
             <SignUpLink />
           </div>
-        </div>
+        </ContentBox>
       </main>
-    </div>
+    </CommonLayout>
   );
 };
 

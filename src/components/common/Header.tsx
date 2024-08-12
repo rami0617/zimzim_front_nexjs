@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LandingHeader = () => {
+const Header = () => {
   return (
     <header>
       <img
@@ -12,4 +12,4 @@ const LandingHeader = () => {
   );
 };
 
-export default LandingHeader;
+export default Header;
