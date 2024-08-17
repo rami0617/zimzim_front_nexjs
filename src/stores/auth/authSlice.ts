@@ -1,14 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+
+import { SingnUpFormInput } from '#/pages/SignUp';
 import { signUp, login } from './authAction';
 import { SignupState } from './type';
-import { SingnUpFormInput } from '#/pages/SignUp';
 
-const initialState = {
+const initialState: SignupState = {
   user: null,
   status: 'idle',
   error: null,
-  token: null,
 };
 
 const authSlice = createSlice({
@@ -36,9 +36,7 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        console.log('login succeed', action.payload);
-        state.token = action.payload.token;
-        console.log(state.token, 'user~');
+        state.user = action.payload;
       })
       .addCase(login.rejected, (state, action) => {
         state.status = 'failed';

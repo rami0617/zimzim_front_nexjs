@@ -6,7 +6,7 @@ import { RootState } from '#stores/store';
 
 const App = () => {
   const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.token !== null,
+    (state: RootState) => state.auth.user !== null,
   );
   const location = useLocation();
 
