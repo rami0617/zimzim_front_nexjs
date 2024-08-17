@@ -1,5 +1,5 @@
-import React, { ReactNode, Ref, forwardRef } from 'react';
-import ErrorMessage from '../ErrorMessage';
+import React, { ReactNode, forwardRef } from 'react';
+import ErrorMessage from '#components/common/ErrorMessage';
 
 const Input = forwardRef<
   HTMLInputElement,
@@ -12,9 +12,6 @@ const Input = forwardRef<
     type?: string;
     label?: string;
     errorMessage?: string;
-    // label: Path<T>;
-    // register: UseFormRegister;
-    // required: boolean;
   }
 >(
   (
@@ -27,8 +24,6 @@ const Input = forwardRef<
       children,
       label,
       errorMessage,
-      // register,
-      // required,
       ...props
     },
     ref,
