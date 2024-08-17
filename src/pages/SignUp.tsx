@@ -2,6 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import { signUp } from '#/stores/auth/authAction';
+import { AppDispatch } from '#/stores/store';
 
 import Button from '#/components/common/button/Button';
 import ContentBox from '#/components/common/ContentBox';
@@ -11,7 +16,7 @@ import CommonLayout from '#/layout/CommonLayout';
 import EyeSlashIcon from '#assets/icon/eye-slash-regular.svg?react';
 import EyeIcon from '#assets/icon/eye-regular.svg?react';
 
-type SingnUpFormInput = {
+export type SingnUpFormInput = {
   id: string;
   nickname: string;
   password: string;
@@ -22,6 +27,9 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   const schema = yup
     .object()
@@ -67,22 +75,28 @@ const SignUp = () => {
     return () => subscription.unsubscribe();
   }, [watch, trigger]);
 
-  const onSubmit = (data: SingnUpFormInput) => {
-    console.log(data, 'data~');
+  const onSubmit = async (data: SingnUpFormInput) => {
+    const resultAction = await dispatch(signUp(data));
+
+    if (signUp.fulfilled.match(resultAction)) {
+      navigate('/');
+    } else {
+      //다시 한번 시도해 주세요
+    }
   };
 
   return (
     <CommonLayout>
       <div className="flex justify-center">
-        <ContentBox className="rounded-2xl gap-8">
+        <ContentBox className="rounded-2xl gap-6">
           <div className="text-center text-xl">
             Let’s get started with ZIMZIM
           </div>
           <form
-            className="flex flex-col gap-8"
+            className="flex flex-col gap-6"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col">
               <Input
                 label="ID"
                 placeholder="Enter your ID"

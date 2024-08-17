@@ -10,7 +10,7 @@ const Landing = () => {
   return (
     <CommonLayout>
       <main className="flex flex-row h-full justify-between px-24">
-        <div className="flex flex-col relative h-full justify-end pb-16 gap-10">
+        <div className="flex flex-col relative h-full justify-end">
           <div className="flex flex-row relative">
             <div className="z-10 absolute pt-2.5">
               <img
@@ -24,11 +24,12 @@ const Landing = () => {
           </div>
         </div>
 
-        <ContentBox className="rounded-t-2xl gap-12  w-[45%]">
+        <ContentBox className="rounded-t-2xl w-[45%]">
           <p className="text-center text-2xl">Welcome back to the ZIMZIM</p>
 
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-10">
             <LoginForm />
+            <hr />
             <SocialLoginButton />
           </div>
 

@@ -34,7 +34,7 @@ const Input = forwardRef<
     ref,
   ) => {
     return (
-      <div>
+      <div className="py-1.5">
         <div className="flex flex-col gap-1">
           <label className="text-neutral-500">{label}</label>
           <div className="relative">
