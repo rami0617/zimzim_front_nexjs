@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import Button from '#components/common/button/Button';
 import Input from '#components/common/input/Input';
@@ -7,7 +8,6 @@ import ErrorMessage from '#components/common/ErrorMessage';
 
 import { AppDispatch } from '#/stores/store';
 import { login } from '#/stores/auth/authAction';
-import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -18,13 +18,13 @@ const LoginForm = () => {
 
   const [hasError, setHasError] = useState<boolean>(false);
 
-  const handleLogin = (event: React.FormEvent) => {
+  const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (idRef.current?.value === '' || passwordRef.current?.value === '') {
       setHasError(true);
     } else {
-      const resultAction = dispatch(
+      const resultAction = await dispatch(
         login({
           id: idRef.current?.value ?? '',
           password: passwordRef.current?.value ?? '',
@@ -32,7 +32,9 @@ const LoginForm = () => {
       );
 
       if (login.fulfilled.match(resultAction)) {
-        navigate('/');
+        navigate('/dashboard');
+      } else {
+        setHasError(true);
       }
     }
   };

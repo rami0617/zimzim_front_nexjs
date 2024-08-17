@@ -4,10 +4,11 @@ import { signUp, login } from './authAction';
 import { SignupState } from './type';
 import { SingnUpFormInput } from '#/pages/SignUp';
 
-const initialState: SignupState = {
+const initialState = {
   user: null,
   status: 'idle',
   error: null,
+  token: null,
 };
 
 const authSlice = createSlice({
@@ -35,7 +36,9 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.user = action.payload;
+        console.log('login succeed', action.payload);
+        state.token = action.payload.token;
+        console.log(state.token, 'user~');
       })
       .addCase(login.rejected, (state, action) => {
         state.status = 'failed';

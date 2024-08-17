@@ -76,12 +76,16 @@ const SignUp = () => {
   }, [watch, trigger]);
 
   const onSubmit = async (data: SingnUpFormInput) => {
-    const resultAction = await dispatch(signUp(data));
+    try {
+      const resultAction = await dispatch(signUp(data));
 
-    if (signUp.fulfilled.match(resultAction)) {
-      navigate('/');
-    } else {
-      //다시 한번 시도해 주세요
+      if (signUp.fulfilled.match(resultAction)) {
+        navigate('/dashboard');
+      } else {
+        console.log('다시 한번 시도해 주세요');
+      }
+    } catch (error) {
+      console.log(error, 'error');
     }
   };
 
