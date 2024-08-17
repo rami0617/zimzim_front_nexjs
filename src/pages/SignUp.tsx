@@ -1,48 +1,140 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import Button from '#/components/common/button/Button';
 import ContentBox from '#/components/common/ContentBox';
 import Input from '#/components/common/input/Input';
 import CommonLayout from '#/layout/CommonLayout';
 
-import UserIcon from '#/assets/icon/user.svg?react';
-import MailIcon from '#assets/icon/mail_outline.svg?react';
-import LockIcon from '#assets/icon/lock.svg?react';
+import EyeSlashIcon from '#assets/icon/eye-slash-regular.svg?react';
+import EyeIcon from '#assets/icon/eye-regular.svg?react';
+
+type SingnUpFormInput = {
+  id: string;
+  nickname: string;
+  password: string;
+  passwordConfirm: string;
+};
 
 const SignUp = () => {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState<boolean>(false);
+
+  const schema = yup
+    .object()
+    .shape({
+      id: yup
+        .string()
+        .matches(/^[A-Za-z0-9]+$/i, '유효한 아이디를 입력해주세요')
+        .required('아이디를 입력해주세요'),
+      nickname: yup
+        .string()
+        .max(10, '10글자 이하여야 합니다.')
+        .matches(/^[A-Za-z0-9]+$/i, '유효한 닉네임을 입력해주세요')
+        .required('닉네임을 입력해주세요'),
+      password: yup
+        .string()
+        .min(8, '8글자 이상이어야 합니다.')
+        .required('비밀번호를 입력해주세요'),
+      passwordConfirm: yup
+        .string()
+        .oneOf([yup.ref('password')], '비밀번호가 일치하지 않습니다')
+        .required('비밀번호 확인을 입력해주세요'),
+    })
+    .required();
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    trigger,
+    formState: { errors },
+  } = useForm<SingnUpFormInput>({
+    resolver: yupResolver(schema),
+  });
+
+  useEffect(() => {
+    const subscription = watch((value, { name }) => {
+      if (name === 'password') {
+        trigger('passwordConfirm');
+      }
+      trigger(name);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch, trigger]);
+
+  const onSubmit = (data: SingnUpFormInput) => {
+    console.log(data, 'data~');
+  };
+
   return (
     <CommonLayout>
       <div className="flex justify-center">
-        <ContentBox className="rounded-2xl gap-14">
-          <div className="text-center text-2xl">
+        <ContentBox className="rounded-2xl gap-8">
+          <div className="text-center text-xl">
             Let’s get started with ZIMZIM
           </div>
-          <form className="flex flex-col gap-12">
-            <div className="flex flex-col gap-8">
-              <Input placeholder="Enter your ID" onChange={() => {}}>
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <UserIcon className="text-gray-dark" width={24} height={24} />
+          <form
+            className="flex flex-col gap-8"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <div className="flex flex-col gap-4">
+              <Input
+                label="ID"
+                placeholder="Enter your ID"
+                errorMessage={errors.id?.message}
+                {...register('id')}
+              />
+              <Input
+                label="Nickname"
+                placeholder="Enter your Nickname"
+                errorMessage={errors.nickname?.message}
+                {...register('nickname')}
+              />
+              <Input
+                label="Password"
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Enter your Password"
+                errorMessage={errors.password?.message}
+                {...register('password')}
+              >
+                <div
+                  className="absolute inset-y-4 right-4"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                >
+                  {showPassword ? (
+                    <EyeIcon width={16} />
+                  ) : (
+                    <EyeSlashIcon width={16} />
+                  )}
                 </div>
               </Input>
-              <Input placeholder="Enter your Nickname" onChange={() => {}}>
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <MailIcon className="text-gray-dark" width={24} height={24} />
-                </div>
-              </Input>
-              <Input placeholder="Enter your Password" onChange={() => {}}>
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <LockIcon className="text-gray-dark" width={24} height={24} />
-                </div>
-              </Input>
-              <Input placeholder="Enter your Password" onChange={() => {}}>
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <LockIcon className="text-gray-dark" width={24} height={24} />
+              <Input
+                label="Confirm Password"
+                type={showConfirmPassword ? 'text' : 'password'}
+                placeholder="Enter your Password"
+                errorMessage={errors.passwordConfirm?.message}
+                {...register('passwordConfirm')}
+              >
+                <div
+                  className="absolute inset-y-4 right-4"
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                >
+                  {showConfirmPassword ? (
+                    <EyeIcon width={16} className="text-gray-dark" />
+                  ) : (
+                    <EyeSlashIcon width={16} />
+                  )}
                 </div>
               </Input>
             </div>
             <Button
               type="submit"
-              className="bg-primary h-14 w-full rounded-lg text-white font-bold text-2xl border-1 border-gray-light"
+              className="bg-primary h-12 w-full rounded-lg text-white font-bold text-xl border-1 border-gray-light"
             >
               Sign Up
             </Button>
