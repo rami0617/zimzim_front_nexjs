@@ -1,4 +1,4 @@
-import { SingnUpFormInput } from '#/pages/SignUp';
+import { SingnUpFormInput } from '#/components/signup/SignupForm';
 
 export interface SignupState {
   user: SingnUpFormInput | null;

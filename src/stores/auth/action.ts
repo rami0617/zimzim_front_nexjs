@@ -1,8 +1,8 @@
 import axios from 'axios';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import axiosInstance from '#/api/axios';
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { SingnUpFormInput } from '#/pages/SignUp';
+import { SingnUpFormInput } from '#/components/signup/SignupForm';
 
 export const signUp = createAsyncThunk(
   'auth/signup',

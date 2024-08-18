@@ -1,12 +1,12 @@
 import React from 'react';
 
-import LoginForm from '#/components/landing/LoginForm';
-import SocialLoginButton from '#/components/landing/SocialLoginButton';
-import SignUpLink from '#/components/landing/SignUpLink';
+import LoginForm from '#/components/login/LoginForm';
+import SocialLoginButton from '#/components/login/SocialLoginButton';
+import SignUpLink from '#/components/login/SignUpLink';
 import CommonLayout from '#/layout/CommonLayout';
 import ContentBox from '#/components/common/ContentBox';
 
-const Landing = () => {
+const Login = () => {
   return (
     <CommonLayout>
       <main className="flex flex-row h-full justify-between px-24">
@@ -42,4 +42,4 @@ const Landing = () => {
   );
 };
 
-export default Landing;
+export default Login;

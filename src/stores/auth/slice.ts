@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-import { SingnUpFormInput } from '#/pages/SignUp';
-import { signUp, login } from './authAction';
-import { SignupState } from './type';
+import { signUp, login } from '#stores/auth/action';
+import { SignupState } from '#stores/auth/type';
+import { SingnUpFormInput } from '#/components/signup/SignupForm';
 
 const initialState: SignupState = {
   user: null,

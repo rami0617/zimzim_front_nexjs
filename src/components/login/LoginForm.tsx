@@ -6,8 +6,8 @@ import Button from '#components/common/button/Button';
 import Input from '#components/common/input/Input';
 import ErrorMessage from '#components/common/ErrorMessage';
 
-import { AppDispatch } from '#/stores/store';
-import { login } from '#/stores/auth/authAction';
+import { AppDispatch } from '#stores/store';
+import { login } from '#stores/auth/action';
 
 const LoginForm = () => {
   const dispatch = useDispatch<AppDispatch>();
