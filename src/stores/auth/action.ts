@@ -1,14 +1,17 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import axiosInstance from '#/api/axios';
 import { SingnUpFormInput } from '#/components/signup/SignupForm';
+import { LoginPayload } from '#stores/auth/type';
 
 export const signUp = createAsyncThunk(
   'auth/signup',
   async (userInfo: SingnUpFormInput, thunkAPI) => {
     try {
-      const response = await axiosInstance.post('auth/register', userInfo);
+      const response = await axios.post<SingnUpFormInput>(
+        import.meta.env.VITE_SERVER_URL + 'auth/register',
+        userInfo,
+      );
 
       return response.data;
     } catch (error) {
@@ -23,15 +26,12 @@ export const signUp = createAsyncThunk(
 
 export const login = createAsyncThunk(
   'auth/login',
-  async (
-    userInfo: {
-      id: string;
-      password: string;
-    },
-    thunkAPI,
-  ) => {
+  async (userInfo: LoginPayload, thunkAPI) => {
     try {
-      const response = await axiosInstance.post('auth/login', userInfo);
+      const response = await axios.post(
+        import.meta.env.VITE_SERVER_URL + 'auth/login',
+        userInfo,
+      );
 
       return response.data;
     } catch (error) {

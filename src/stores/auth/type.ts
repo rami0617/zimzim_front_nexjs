@@ -1,7 +1,15 @@
-import { SingnUpFormInput } from '#/components/signup/SignupForm';
+export interface User {
+  id: string;
+  nickname: string;
+}
 
 export interface SignupState {
-  user: SingnUpFormInput | null;
+  user: User | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
+}
+
+export interface LoginPayload {
+  id: string;
+  password: string;
 }

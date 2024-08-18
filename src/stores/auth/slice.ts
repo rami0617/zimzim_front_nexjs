@@ -2,8 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { signUp, login } from '#stores/auth/action';
-import { SignupState } from '#stores/auth/type';
-import { SingnUpFormInput } from '#/components/signup/SignupForm';
+import { SignupState, User } from '#stores/auth/type';
 
 const initialState: SignupState = {
   user: null,
@@ -12,7 +11,7 @@ const initialState: SignupState = {
 };
 
 const authSlice = createSlice({
-  name: 'signup',
+  name: 'auth',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -20,27 +19,24 @@ const authSlice = createSlice({
       .addCase(signUp.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(
-        signUp.fulfilled,
-        (state, action: PayloadAction<SingnUpFormInput>) => {
-          state.status = 'succeeded';
-          state.user = action.payload;
-        },
-      )
+      .addCase(signUp.fulfilled, (state, action: PayloadAction<User>) => {
+        state.status = 'succeeded';
+        state.user = action.payload;
+      })
       .addCase(signUp.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.payload ?? action.error;
+        state.error = action.error.message ?? 'Unknown error';
       })
       .addCase(login.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(login.fulfilled, (state, action) => {
+      .addCase(login.fulfilled, (state, action: PayloadAction<User>) => {
         state.status = 'succeeded';
         state.user = action.payload;
       })
       .addCase(login.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.payload;
+        state.error = action.error.message ?? 'Unknown error';
       });
   },
 });
