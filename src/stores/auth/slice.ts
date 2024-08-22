@@ -13,7 +13,14 @@ const initialState: SignupState = {
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    setUser(state, action) {
+      state.user = action.payload;
+    },
+    logout(state) {
+      state.user = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(signUp.pending, (state) => {
@@ -26,19 +33,21 @@ const authSlice = createSlice({
       .addCase(signUp.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message ?? 'Unknown error';
-      })
-      .addCase(login.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(login.fulfilled, (state, action: PayloadAction<User>) => {
-        state.status = 'succeeded';
-        state.user = action.payload;
-      })
-      .addCase(login.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message ?? 'Unknown error';
       });
+    // .addCase(login.pending, (state) => {
+    //   state.status = 'loading';
+    // })
+    // .addCase(login.fulfilled, (state, action: PayloadAction<User>) => {
+    //   state.status = 'succeeded';
+    //   state.user = action.payload;
+    // })
+    // .addCase(login.rejected, (state, action) => {
+    //   state.status = 'failed';
+    //   state.error = action.error.message ?? 'Unknown error';
+    // });
   },
 });
+
+export const { setUser, logout } = authSlice.actions;
 
 export default authSlice.reducer;

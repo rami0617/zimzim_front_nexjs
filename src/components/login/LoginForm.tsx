@@ -30,9 +30,8 @@ const LoginForm = () => {
           password: passwordRef.current?.value ?? '',
         }),
       );
-
       if (login.fulfilled.match(resultAction)) {
-        navigate('/dashboard');
+        navigate('/');
       } else {
         setHasError(true);
       }

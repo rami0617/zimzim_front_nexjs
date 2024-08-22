@@ -1,27 +1,28 @@
 import React from 'react';
-import { Outlet, Navigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
 
-import { RootState } from '#stores/store';
+import { store } from '#stores/store';
+
+import Dashboard from '#/pages/Dashboard';
+import Login from '#/pages/Login';
+import SignUp from '#/pages/SignUp';
+
+import AuthGuard from '#components/common/AuthGuard';
 
 const App = () => {
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.user !== null,
-  );
-  const location = useLocation();
-
-  if (
-    !isAuthenticated &&
-    location.pathname !== '/login' &&
-    location.pathname !== '/sign-up'
-  ) {
-    return <Navigate to="/login" />;
-  }
-
   return (
-    <main className="font-roboto">
-      <Outlet />
-    </main>
+    <Provider store={store}>
+      <Router>
+        <AuthGuard>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/sign-up" element={<SignUp />} />
+          </Routes>
+        </AuthGuard>
+      </Router>
+    </Provider>
   );
 };
 
