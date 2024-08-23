@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { SingnUpFormInput } from '#/components/signup/SignupForm';
-import { LoginPayload } from '#stores/auth/type';
+import { LoginPayload, User } from '#stores/auth/type';
 import axiosInstance from '#/api/axios';
 
 export const signUp = createAsyncThunk(
@@ -25,13 +25,13 @@ export const signUp = createAsyncThunk(
   },
 );
 
-export const login = createAsyncThunk(
+export const login = createAsyncThunk<User, LoginPayload>(
   'auth/login',
   async (userInfo: LoginPayload, thunkAPI) => {
     try {
       const response = await axiosInstance.post('auth/login', userInfo);
-
-      return response;
+      console.log(response);
+      return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         return thunkAPI.rejectWithValue(error.response?.data);

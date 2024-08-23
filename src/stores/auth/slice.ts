@@ -33,18 +33,19 @@ const authSlice = createSlice({
       .addCase(signUp.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message ?? 'Unknown error';
+      })
+      .addCase(login.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(login.fulfilled, (state, action: PayloadAction<User>) => {
+        state.status = 'succeeded';
+        console.log(action, 'action');
+        state.user = action.payload;
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message ?? 'Unknown error';
       });
-    // .addCase(login.pending, (state) => {
-    //   state.status = 'loading';
-    // })
-    // .addCase(login.fulfilled, (state, action: PayloadAction<User>) => {
-    //   state.status = 'succeeded';
-    //   state.user = action.payload;
-    // })
-    // .addCase(login.rejected, (state, action) => {
-    //   state.status = 'failed';
-    //   state.error = action.error.message ?? 'Unknown error';
-    // });
   },
 });
 

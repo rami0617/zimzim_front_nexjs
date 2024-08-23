@@ -14,7 +14,7 @@ const UserCommonLayout = ({
   children: ReactNode;
 }) => {
   return (
-    <div className="w-screen h-screen bg-bg-light/50 flex">
+    <div className="w-screen h-screen bg-bg-light/25 flex">
       <header className="w-1/6 justify-center algin-center border-b-1 border-slate-900/10 bg-white">
         <nav className="h-full flex flex-col gap-6 pt-4 items-center">
           <div className="p-2">

@@ -5,7 +5,7 @@ import TotalChart from '#/components/dashboard/TotalChart';
 
 const Dashboard = () => {
   return (
-    <UserCommonLayout title="dashboard">
+    <UserCommonLayout title="DASHBOARD">
       <TotalChart />
     </UserCommonLayout>
   );
