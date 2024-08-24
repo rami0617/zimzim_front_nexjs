@@ -8,33 +8,31 @@ interface MenuItemProps {
   title: string;
 }
 
-const MenuItem = ({ to, Icon, title }: MenuItemProps) => {
-  return (
-    <NavLink
-      to={to}
-      end
-      className={({ isActive }) =>
-        clsx('group flex flex-row h-12 p-2 items-center gap-3 rounded-lg ', {
-          'bg-bg-light/70 text-white': isActive,
-          'hover:bg-bg-light/70 hover:text-white text-gray-600': !isActive,
-        })
-      }
-    >
-      {({ isActive }) => (
-        <>
-          <Icon
-            width={24}
-            height={24}
-            className={clsx('group-hover:text-white', {
-              'text-white': isActive,
-              'text-gray-600': !isActive,
-            })}
-          />
-          <div className="text-xl">{title}</div>
-        </>
-      )}
-    </NavLink>
-  );
-};
+const MenuItem = ({ to, Icon, title }: MenuItemProps) => (
+  <NavLink
+    to={to}
+    end
+    className={({ isActive }) =>
+      clsx('group flex flex-row h-12 p-2 items-center gap-3 rounded-lg', {
+        'bg-secondary-light/70 text-white': isActive,
+        'hover:bg-secondary-light/70 hover:text-white text-gray-600': !isActive,
+      })
+    }
+  >
+    {({ isActive }) => (
+      <>
+        <Icon
+          width={24}
+          height={24}
+          className={clsx('group-hover:text-white', {
+            'text-white': isActive,
+            'text-gray-600': !isActive,
+          })}
+        />
+        <div className="text-xl">{title}</div>
+      </>
+    )}
+  </NavLink>
+);
 
 export default MenuItem;

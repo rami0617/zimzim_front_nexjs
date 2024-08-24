@@ -1,6 +1,27 @@
 # ZIMZIM
 
+## 기술스택
+
+- React
+- Typescript
+- Vite
+- Redux-toolkit
+- React-router-dom
+- TawilindCss
+
+## 프로젝트 구성
+
+- pages > layout > component
+  - Login > Layout > LoginForm, SignUpLink, SocialLoginButton
+  - SignUp > Layout > SignupForm
+  - Dashboard > UserLayout > TotalChart
+  - Water > UserLayout > ...
+  - Exercise > UserLayout > ...
+
 ## 기술적인 고민
+
+1. input의 공통컴포넌트를 만들 때 controlled component와 uncontrolled component로 나누어 만드는 것은 어떨까?
+2. 에러 관리를 전역적으로 하려면 어떤 방법이 가장 좋을까?
 
 ### 기술 스택 도입
 
@@ -18,15 +39,6 @@
 ### 궁금
 
 1. 왜 TailwindCss에는 Autoprefix와 PostCSS가 필요한가?
-
-## 기술스택
-
-- React
-- Typescript
-- Vite
-- Redux-toolkit
-- React-router-dom
-- TawilindCss
 
 ## 기능
 

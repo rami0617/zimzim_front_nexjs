@@ -10,7 +10,7 @@ export default {
         transparent: 'transparent',
         current: 'currentColor',
         primary: '#4B81FF',
-        bg: {
+        secondary: {
           light: '#B3C1F9',
           dark: '#6A7293',
         },

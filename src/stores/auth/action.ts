@@ -10,7 +10,7 @@ export const signUp = createAsyncThunk(
   async (userInfo: SingnUpFormInput, thunkAPI) => {
     try {
       const response = await axiosInstance.post<SingnUpFormInput>(
-        'auth/register',
+        '/auth/register',
         userInfo,
       );
 
@@ -29,7 +29,7 @@ export const login = createAsyncThunk<User, LoginPayload>(
   'auth/login',
   async (userInfo: LoginPayload, thunkAPI) => {
     try {
-      const response = await axiosInstance.post('auth/login', userInfo);
+      const response = await axiosInstance.post('/auth/login', userInfo);
 
       return response.data;
     } catch (error) {

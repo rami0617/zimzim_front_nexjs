@@ -5,8 +5,8 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import Button from '#/components/common/button/Button';
-import Input from '#/components/common/input/Input';
+import Button from '#/components/common/Button';
+import Input from '#/components/common/Input';
 
 import { signUp } from '#/stores/auth/action';
 import { AppDispatch } from '#/stores/store';

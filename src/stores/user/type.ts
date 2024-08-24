@@ -1,10 +1,16 @@
-import { User } from '../auth/type';
+import { User } from '#stores/auth/type';
 
 export interface UserState {
   user: User | null;
   exercise: Exercise[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
+}
+
+export interface ExercisePayload {
+  userId: string;
+  startDate: string;
+  endDate: string;
 }
 
 export interface Exercise {

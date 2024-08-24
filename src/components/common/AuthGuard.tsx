@@ -1,11 +1,11 @@
 import React, { ReactNode, useEffect } from 'react';
-
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
+import { setNavigateFunction } from '#/api/axios';
+
 import { getUserInfo } from '#/stores/user/action';
 import { AppDispatch, RootState } from '#/stores/store';
-import { setNavigateFunction } from '#/api/axios';
 
 const AuthGuard = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ const AuthGuard = ({ children }: { children: ReactNode }) => {
     return <Navigate to="/login" />;
   }
 
-  return <>{children}</>;
+  return <div>{children}</div>;
 };
 
 export default AuthGuard;

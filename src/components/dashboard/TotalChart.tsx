@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -6,42 +7,38 @@ import {
   LinearScale,
   PointElement,
   LineElement,
-  Title,
-  Tooltip,
-  Legend,
 } from 'chart.js';
-import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 
+import { AppDispatch, RootState } from '#/stores/store';
 import { getExercise } from '#/stores/user/action';
+import { Exercise } from '#/stores/user/type';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
 const TotalChart = () => {
-  const dispatch = useDispatch();
-  const exerciseData = useSelector((state) => state.user.exercise);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const exerciseData = useSelector((state: RootState) => state.user.exercise);
+  const userId = useSelector((state: RootState) => state.auth.user?.id);
 
   useEffect(() => {
-    dispatch(getExercise());
+    dispatch(
+      getExercise({
+        userId: userId ?? '',
+        startDate: dayjs().subtract(7, 'day').format('YYYY-MM-DD'),
+        endDate: dayjs().format('YYYY-MM-DD'),
+      }),
+    );
   }, [dispatch]);
 
   const data = {
-    labels: exerciseData.map((data) => {
-      return dayjs(data.date).format('YYYY-MM-DD');
-    }),
+    labels: exerciseData.map((data: Exercise) =>
+      dayjs(data.date).format('YYYY-MM-DD'),
+    ),
     datasets: [
       {
-        data: exerciseData.map((data) => {
-          return data.duration;
-        }),
+        data: exerciseData.map((data: Exercise) => data.duration),
         fill: false,
         borderColor: 'rgb(75, 192, 192)',
         tension: 0.1,

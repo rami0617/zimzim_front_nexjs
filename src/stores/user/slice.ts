@@ -34,7 +34,7 @@ const userSlice = createSlice({
       })
       .addCase(
         getExercise.fulfilled,
-        (state, action: PayloadAction<Exercise>) => {
+        (state, action: PayloadAction<Exercise[]>) => {
           state.status = 'succeeded';
 
           state.exercise = action.payload;

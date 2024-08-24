@@ -33,7 +33,7 @@ axiosInstance.interceptors.response.use(
       if (status === 401 || status === 403) {
         try {
           const response = await axios.post(
-            `${import.meta.env.VITE_SERVER_URL}auth/refresh-token`,
+            `${import.meta.env.VITE_SERVER_URL}/auth/refresh-token`,
           );
 
           originalRequest.headers['Authorization'] =
