@@ -9,8 +9,8 @@ export const signUp = createAsyncThunk(
   'auth/signup',
   async (userInfo: SingnUpFormInput, thunkAPI) => {
     try {
-      const response = await axios.post<SingnUpFormInput>(
-        import.meta.env.VITE_SERVER_URL + 'auth/register',
+      const response = await axiosInstance.post<SingnUpFormInput>(
+        'auth/register',
         userInfo,
       );
 
@@ -30,7 +30,7 @@ export const login = createAsyncThunk<User, LoginPayload>(
   async (userInfo: LoginPayload, thunkAPI) => {
     try {
       const response = await axiosInstance.post('auth/login', userInfo);
-      console.log(response);
+
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {

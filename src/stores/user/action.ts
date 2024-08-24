@@ -9,7 +9,7 @@ export const getUserInfo = createAsyncThunk(
     try {
       const response = await axiosInstance.get('user/info');
 
-      return response;
+      return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         return thunkAPI.rejectWithValue(error.response?.data);
@@ -50,8 +50,6 @@ export const postExercise = createAsyncThunk(
         type: 1,
         force: 1,
       });
-
-      console.log(response, 'reponse~');
     } catch (error) {
       if (axios.isAxiosError(error)) {
         return thunkAPI.rejectWithValue(error.response?.data);

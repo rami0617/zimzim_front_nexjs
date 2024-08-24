@@ -13,7 +13,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 
-import { getExercise } from '#/stores/user/actions';
+import { getExercise } from '#/stores/user/action';
 
 ChartJS.register(
   CategoryScale,

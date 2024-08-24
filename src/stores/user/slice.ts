@@ -1,8 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { getExercise, getUserInfo } from '#stores/user/actions';
+import { getExercise, getUserInfo } from '#/stores/user/action';
+import { Exercise, UserState } from '#stores/user/type';
+import { User } from '#stores/auth/type';
 
-const initialState = {
+const initialState: UserState = {
   user: null,
   status: 'idle',
   error: null,
@@ -18,7 +20,7 @@ const userSlice = createSlice({
       .addCase(getUserInfo.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(getUserInfo.fulfilled, (state, action) => {
+      .addCase(getUserInfo.fulfilled, (state, action: PayloadAction<User>) => {
         state.status = 'succeeded';
 
         state.user = action.payload;
@@ -30,11 +32,14 @@ const userSlice = createSlice({
       .addCase(getExercise.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(getExercise.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+      .addCase(
+        getExercise.fulfilled,
+        (state, action: PayloadAction<Exercise>) => {
+          state.status = 'succeeded';
 
-        state.exercise = action.payload;
-      })
+          state.exercise = action.payload;
+        },
+      )
       .addCase(getExercise.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message ?? 'Unknown error';
