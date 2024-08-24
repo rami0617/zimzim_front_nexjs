@@ -4,14 +4,14 @@ import { Provider } from 'react-redux';
 
 import { store } from '#stores/store';
 
-import Dashboard from '#/pages/Dashboard';
-import Login from '#/pages/Login';
-import SignUp from '#/pages/SignUp';
-import Exercise from '#/pages/Exercise';
-import Water from '#/pages/Water';
+import Dashboard from '#pages/Dashboard';
+import Login from '#pages/Login';
+import SignUp from '#pages/SignUp';
+import Exercise from '#pages/Exercise';
+import Water from '#pages/Water';
 
-import UserLayout from '#/layout/UserLayout';
-import CommonLayout from '#/layout/CommonLayout';
+import UserLayout from '#layout/UserLayout';
+import CommonLayout from '#layout/CommonLayout';
 
 import AuthGuard from '#components/common/AuthGuard';
 

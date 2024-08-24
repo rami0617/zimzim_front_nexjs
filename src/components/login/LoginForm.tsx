@@ -2,8 +2,8 @@ import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import Button from '#/components/common/Button';
-import Input from '#/components/common/Input';
+import Button from '#components/common/Button';
+import Input from '#components/common/Input';
 import ErrorMessage from '#components/common/ErrorMessage';
 
 import { AppDispatch } from '#stores/store';

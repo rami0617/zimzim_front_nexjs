@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import MenuItem from '#/components/common/menu/MenuItem';
+import MenuItem from '#components/common/menu/MenuItem';
 
 import ChartIcon from '#assets/icon/chart.svg?react';
 import ExerciseIcon from '#assets/icon/exercise.svg?react';

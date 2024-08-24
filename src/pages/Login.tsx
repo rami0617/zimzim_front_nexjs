@@ -1,9 +1,9 @@
 import React from 'react';
 
-import LoginForm from '#/components/login/LoginForm';
-import SocialLoginButton from '#/components/login/SocialLoginButton';
-import SignUpLink from '#/components/login/SignUpLink';
-import ContentBox from '#/components/common/ContentBox';
+import LoginForm from '#components/login/LoginForm';
+import SocialLoginButton from '#components/login/SocialLoginButton';
+import SignUpLink from '#components/login/SignUpLink';
+import ContentBox from '#components/common/ContentBox';
 
 const Login = () => (
   <main className="flex flex-row h-full justify-between px-24">

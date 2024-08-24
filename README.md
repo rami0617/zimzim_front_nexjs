@@ -11,7 +11,7 @@
 
 ## 프로젝트 구성
 
-- pages > layout > component
+- pages > layout > components
   - Login > Layout > LoginForm, SignUpLink, SocialLoginButton
   - SignUp > Layout > SignupForm
   - Dashboard > UserLayout > TotalChart
@@ -27,6 +27,7 @@
 
 - react
   - react 18과 그 이후 기술들, 선언형 UId와 단방향 데이터 흐름들에 대한 이해를 높이기 위해 선택했습니다.
+- ## vite
 - redux-toolkit
   - react가 가지고 있는 단방향 데이터 흐름과 일치하는 flux 패턴 기반의 상태관리 라이브러리로 상태관리를 간소화하고 예측 가능하게 해줍니다.
 - tailwindCSS

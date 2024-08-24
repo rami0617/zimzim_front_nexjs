@@ -1,8 +1,8 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
-import Menu from '#/components/common/menu/Menu';
-import UserHeader from '#/components/common/header/UserHeader';
+import Menu from '#components/common/menu/Menu';
+import UserHeader from '#components/common/header/UserHeader';
 
 const UserLayout = () => (
   <div className="w-screen h-screen bg-secondary-light/25">

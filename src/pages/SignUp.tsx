@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ContentBox from '#/components/common/ContentBox';
-import SignupForm from '#/components/signup/SignupForm';
+import ContentBox from '#components/common/ContentBox';
+import SignupForm from '#components/signup/SignupForm';
 
 const SignUp = () => (
   <div className="flex justify-center">

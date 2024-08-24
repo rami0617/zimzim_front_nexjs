@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { getExercise, getUserInfo } from '#/stores/user/action';
+import { getExercise, getUserInfo } from '#stores/user/action';
 import { Exercise, UserState } from '#stores/user/type';
 import { User } from '#stores/auth/type';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Button from '#/components/common/Button';
+import Button from '#components/common/Button';
 
 import GoogleIcon from '#assets/icon/google.svg?react';
 import AppleIcon from '#assets/icon/apple.svg?react';
