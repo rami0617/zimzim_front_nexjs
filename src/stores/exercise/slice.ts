@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { getExercise } from './action';
-import { Exercise, ExerciseState } from './type';
+import { getExercise } from '#stores/exercise/action';
+import { Exercise, ExerciseState } from '#stores/exercise/type';
 
 const initialState: ExerciseState = {
   status: 'idle',
@@ -9,10 +9,10 @@ const initialState: ExerciseState = {
   exercise: [],
 };
 
-const userSlice = createSlice({
-  name: 'user',
+const exerciseSlice = createSlice({
+  name: 'exercise',
   initialState,
-  reducers: {},
+  reducers: { resetExercise: () => initialState },
   extraReducers: (builder) => {
     builder
 
@@ -34,4 +34,6 @@ const userSlice = createSlice({
   },
 });
 
-export default userSlice.reducer;
+export const { resetExercise } = exerciseSlice.actions;
+
+export default exerciseSlice.reducer;

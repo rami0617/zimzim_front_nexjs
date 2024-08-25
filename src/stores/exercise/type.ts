@@ -4,10 +4,18 @@ export interface ExerciseState {
   exercise: Exercise[];
 }
 
-export interface ExercisePayload {
+export interface GetExercisePayload {
   userId: string;
   startDate: string;
   endDate: string;
+}
+
+export interface PostExercisePayload {
+  userId: string;
+  date: string;
+  duration: number;
+  type: EXERCISE_TYPE;
+  force: EXERCISE_FORCE_TYPE;
 }
 
 export interface Exercise {
@@ -15,7 +23,7 @@ export interface Exercise {
   date: string;
   duration: number;
   type: EXERCISE_TYPE;
-  force: EXCERCISE_FORCE_TYPE;
+  force: EXERCISE_FORCE_TYPE;
 }
 
 const EXERCISE_TYPE = {
@@ -24,9 +32,9 @@ const EXERCISE_TYPE = {
 } as const;
 type EXERCISE_TYPE = (typeof EXERCISE_TYPE)[keyof typeof EXERCISE_TYPE];
 
-const EXCERCISE_FORCE_TYPE = {
+const EXERCISE_FORCE_TYPE = {
   EASY: 'easy',
   HARD: 'hard',
 } as const;
-type EXCERCISE_FORCE_TYPE =
-  (typeof EXCERCISE_FORCE_TYPE)[keyof typeof EXCERCISE_FORCE_TYPE];
+type EXERCISE_FORCE_TYPE =
+  (typeof EXERCISE_FORCE_TYPE)[keyof typeof EXERCISE_FORCE_TYPE];

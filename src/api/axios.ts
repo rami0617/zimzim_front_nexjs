@@ -10,7 +10,7 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const { url } = config;
 
-    if (!url?.startsWith('auth/sign-up')) {
+    if (!url?.startsWith('/auth/sign-up')) {
       config.withCredentials = true;
     }
 
