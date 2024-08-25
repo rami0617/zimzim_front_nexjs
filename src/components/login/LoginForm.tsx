@@ -1,9 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, FormEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import Button from '#components/common/button/Button';
-import Input from '#components/common/input/Input';
+import Button from '#components/common/Button';
+import Input from '#components/common/Input';
 import ErrorMessage from '#components/common/ErrorMessage';
 
 import { AppDispatch } from '#stores/store';
@@ -18,7 +18,7 @@ const LoginForm = () => {
 
   const [hasError, setHasError] = useState<boolean>(false);
 
-  const handleLogin = async (event: React.FormEvent) => {
+  const handleLogin = async (event: FormEvent) => {
     event.preventDefault();
 
     if (idRef.current?.value === '' || passwordRef.current?.value === '') {
@@ -30,9 +30,8 @@ const LoginForm = () => {
           password: passwordRef.current?.value ?? '',
         }),
       );
-
       if (login.fulfilled.match(resultAction)) {
-        navigate('/dashboard');
+        navigate('/');
       } else {
         setHasError(true);
       }
@@ -46,6 +45,7 @@ const LoginForm = () => {
           label="ID"
           placeholder="Enter your ID"
           autoComplete="username"
+          defaultValue=""
           ref={idRef}
         />
         <Input
@@ -53,6 +53,7 @@ const LoginForm = () => {
           type="password"
           placeholder="Enter your password"
           autoComplete="current-password"
+          defaultValue=""
           ref={passwordRef}
         />
         {hasError && (
