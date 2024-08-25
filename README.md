@@ -1,4 +1,4 @@
-# <img src="./src/assets/icon/icon.svg" alt="ZIMZIM" width="20" color="black"/>ZIMZIM
+# <img src="./src/assets/icon/icon.svg" alt="ZIMZIM" width="50" color="black"/> ZIMZIM
 
 이 프로젝트는 리액트, 함께 사용하는 프레임워크, 라이브러리들에 대해 깊게 탐구해보고자 만든 프로젝트입니다.
 
