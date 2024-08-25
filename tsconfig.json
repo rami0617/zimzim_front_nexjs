@@ -12,8 +12,15 @@
     "jsx": "react",
     "baseUrl": ".",
     "paths": {
-      "#/*": ["./src/*"]
+      "#/*": ["src/*"],
+      "#pages/*": ["src/pages/*"],
+      "#layout/*": ["src/layout/*"],
+      "#components/*": ["src/components/*"],
+      "#assets/*": ["src/assets/*"],
+      "#stores/*": ["src/stores/*"],
+      "#hooks/*": ["src/hooks/*"]
     }
   },
-  "include": ["src", "vite.config.ts"]
+  "include": ["src", "vite.config.ts"],
+  "files": ["src/custom.d.ts"]
 }
