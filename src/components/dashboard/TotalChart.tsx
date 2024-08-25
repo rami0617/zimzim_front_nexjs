@@ -11,26 +11,30 @@ import {
 import dayjs from 'dayjs';
 
 import { AppDispatch, RootState } from '#/stores/store';
-import { getExercise } from '#/stores/user/action';
-import { Exercise } from '#/stores/user/type';
+import { getExercise } from '#/stores/exercise/action';
+import { Exercise } from '#/stores/exercise/type';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
 const TotalChart = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const exerciseData = useSelector((state: RootState) => state.user.exercise);
-  const userId = useSelector((state: RootState) => state.auth.user?.id);
+  const exerciseData = useSelector(
+    (state: RootState) => state.exercise?.exercise,
+  );
+  const userId = useSelector((state: RootState) => state.user.user?.id);
 
   useEffect(() => {
-    dispatch(
-      getExercise({
-        userId: userId ?? '',
-        startDate: dayjs().subtract(7, 'day').format('YYYY-MM-DD'),
-        endDate: dayjs().format('YYYY-MM-DD'),
-      }),
-    );
-  }, [dispatch]);
+    if (userId) {
+      dispatch(
+        getExercise({
+          userId: userId,
+          startDate: dayjs().subtract(7, 'day').format('YYYY-MM-DD'),
+          endDate: dayjs().format('YYYY-MM-DD'),
+        }),
+      );
+    }
+  }, [dispatch, userId]);
 
   const data = {
     labels: exerciseData.map((data: Exercise) =>

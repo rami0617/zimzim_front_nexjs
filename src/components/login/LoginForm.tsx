@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, FormEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,7 +18,7 @@ const LoginForm = () => {
 
   const [hasError, setHasError] = useState<boolean>(false);
 
-  const handleLogin = async (event: React.FormEvent) => {
+  const handleLogin = async (event: FormEvent) => {
     event.preventDefault();
 
     if (idRef.current?.value === '' || passwordRef.current?.value === '') {
@@ -45,6 +45,7 @@ const LoginForm = () => {
           label="ID"
           placeholder="Enter your ID"
           autoComplete="username"
+          defaultValue=""
           ref={idRef}
         />
         <Input
@@ -52,6 +53,7 @@ const LoginForm = () => {
           type="password"
           placeholder="Enter your password"
           autoComplete="current-password"
+          defaultValue=""
           ref={passwordRef}
         />
         {hasError && (

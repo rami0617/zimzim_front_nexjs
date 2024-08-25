@@ -1,4 +1,4 @@
-import React, { ReactNode, forwardRef } from 'react';
+import React, { ReactNode, forwardRef, useState, useEffect } from 'react';
 
 import ErrorMessage from '#components/common/ErrorMessage';
 
@@ -11,6 +11,8 @@ interface InputProps {
   type?: string;
   label?: string;
   errorMessage?: string;
+  value?: string;
+  defaultValue?: string;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -24,30 +26,52 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       children,
       label,
       errorMessage,
+      value,
+      defaultValue = '',
       ...props
     },
     ref,
-  ) => (
-    <div className="py-1.5">
-      <div className="flex flex-col gap-1">
-        <label className="text-neutral-500">{label}</label>
-        <div className="relative">
-          <input
-            name={label}
-            type={type}
-            className={`border-1 border-gray-dark rounded-lg h-12 w-full pl-4 ${className}`}
-            onChange={onChange}
-            placeholder={placeholder}
-            autoComplete={autoComplete}
-            ref={ref}
-            {...props}
-          />
-          {children}
+  ) => {
+    const [internalValue, setInternalValue] = useState<string>(defaultValue);
+
+    const isControlled = value !== undefined;
+
+    useEffect(() => {
+      if (isControlled && value !== undefined) {
+        setInternalValue(value);
+      }
+    }, [value, isControlled]);
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (!isControlled) {
+        setInternalValue(event.target.value);
+      }
+      onChange?.(event);
+    };
+
+    return (
+      <div className="py-1.5">
+        <div className="flex flex-col gap-1">
+          <label className="text-neutral-500">{label}</label>
+          <div className="relative">
+            <input
+              name={label}
+              type={type}
+              className={`border-1 border-gray-dark rounded-lg h-12 w-full pl-4 ${className}`}
+              onChange={handleChange}
+              placeholder={placeholder}
+              autoComplete={autoComplete}
+              ref={ref}
+              value={isControlled ? value : internalValue}
+              {...props}
+            />
+            {children}
+          </div>
         </div>
+        <ErrorMessage message={errorMessage ?? ''} />
       </div>
-      <ErrorMessage message={errorMessage ?? ''} />
-    </div>
-  ),
+    );
+  },
 );
 
 export default Input;
