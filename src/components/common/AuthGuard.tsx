@@ -1,12 +1,12 @@
 import React, { ReactNode, useEffect } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { setNavigateFunction } from '#/api/axios';
 
 import { RootState } from '#/stores/store';
 
-const AuthGuard = ({ children }: { children: ReactNode }) => {
+const AuthGuard = () => {
   const navigate = useNavigate();
 
   const user = useSelector((state: RootState) => state.user);
@@ -23,7 +23,11 @@ const AuthGuard = ({ children }: { children: ReactNode }) => {
     return <Navigate to="/login" />;
   }
 
-  return <div>{children}</div>;
+  return (
+    <div>
+      <Outlet />
+    </div>
+  );
 };
 
 export default AuthGuard;

@@ -13,10 +13,12 @@ import dayjs from 'dayjs';
 import { AppDispatch, RootState } from '#/stores/store';
 import { getExercise } from '#/stores/exercise/action';
 import { Exercise } from '#/stores/exercise/type';
+import { useNavigate } from 'react-router-dom';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
 const TotalChart = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
   const exerciseData = useSelector(
@@ -69,7 +71,13 @@ const TotalChart = () => {
   return (
     <div className="flex justify-center pt-12">
       <div className="w-4/5 h-80">
-        <Line data={data} options={options} />
+        <Line
+          data={data}
+          options={options}
+          onClick={() => {
+            navigate('/exercise');
+          }}
+        />
       </div>
     </div>
   );

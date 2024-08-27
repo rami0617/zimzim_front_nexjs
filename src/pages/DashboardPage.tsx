@@ -2,7 +2,7 @@ import React from 'react';
 
 import TotalChart from '#components/dashboard/TotalChart';
 
-const Dashboard = () => {
+const DashboardPage = () => {
   return (
     <div>
       <TotalChart />
@@ -10,4 +10,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardPage;
