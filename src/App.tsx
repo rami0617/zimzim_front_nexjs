@@ -4,6 +4,10 @@ import { Provider } from 'react-redux';
 
 import { store } from '#stores/store';
 
+import UserLayout from '#layout/UserLayout';
+import CommonLayout from '#layout/CommonLayout';
+import AuthGuard from '#/layout/AuthGuard';
+
 import DashboardPage from '#pages/DashboardPage';
 import LoginPage from '#pages/LoginPage';
 import SignUpPage from '#pages/SignUpPage';
@@ -11,12 +15,8 @@ import ExercisePage from '#pages/ExercisePage';
 import WaterPage from '#pages/WaterPage';
 import NotFoundPage from '#pages/NotFoundPage';
 
-import UserLayout from '#layout/UserLayout';
-import CommonLayout from '#layout/CommonLayout';
-
-import AuthGuard from '#components/common/AuthGuard';
-import ExercisePost from './components/exercise/ExercisePost';
-import ExerciseList from './components/exercise/ExerciseList';
+import ExercisePost from '#components/exercise/ExercisePost';
+import ExerciseList from '#components/exercise/ExerciseList';
 
 const App = () => (
   <Provider store={store}>

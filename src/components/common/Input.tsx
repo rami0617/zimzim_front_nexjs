@@ -1,10 +1,18 @@
-import React, { ReactNode, forwardRef, useState, useEffect } from 'react';
+import React, {
+  ReactNode,
+  forwardRef,
+  useState,
+  useEffect,
+  ChangeEvent,
+} from 'react';
+import { twMerge } from 'tailwind-merge';
 
 import ErrorMessage from '#components/common/ErrorMessage';
 
 interface InputProps {
   className?: string;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  inputClassName?: string;
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   autoComplete?: string;
   placeholder: string;
   children?: ReactNode;
@@ -18,7 +26,8 @@ interface InputProps {
 const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
-      className,
+      className = '',
+      inputClassName = '',
       onChange,
       autoComplete = 'off',
       placeholder,
@@ -50,14 +59,20 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     };
 
     return (
-      <div className="py-1.5">
-        <div className="flex flex-col gap-1">
+      <div className="flex flex-col align-center">
+        <div
+          className={twMerge(
+            `flex flex-col gap-1 justify-between align-center ${className}`,
+          )}
+        >
           <label className="text-neutral-500">{label}</label>
           <div className="relative">
             <input
               name={label}
               type={type}
-              className={`border-1 border-gray-dark rounded-lg h-12 w-full pl-4 ${className}`}
+              className={twMerge(
+                `border-1 border-gray-dark rounded-lg h-12 w-full px-4 ${inputClassName}`,
+              )}
               onChange={handleChange}
               placeholder={placeholder}
               autoComplete={autoComplete}

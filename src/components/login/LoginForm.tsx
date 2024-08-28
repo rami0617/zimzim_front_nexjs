@@ -40,7 +40,7 @@ const LoginForm = () => {
 
   return (
     <form className="flex flex-col gap-6" onSubmit={handleLogin}>
-      <div>
+      <div className="flex flex-col gap-6">
         <Input
           label="ID"
           placeholder="Enter your ID"

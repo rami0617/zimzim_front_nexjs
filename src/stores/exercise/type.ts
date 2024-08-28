@@ -26,15 +26,16 @@ export interface Exercise {
   force: EXERCISE_FORCE_TYPE;
 }
 
-const EXERCISE_TYPE = {
+export const EXERCISE_TYPE = {
   WEIGHT: 'weight',
   CARDIO: 'cardio',
 } as const;
-type EXERCISE_TYPE = (typeof EXERCISE_TYPE)[keyof typeof EXERCISE_TYPE];
+export type EXERCISE_TYPE = (typeof EXERCISE_TYPE)[keyof typeof EXERCISE_TYPE];
 
-const EXERCISE_FORCE_TYPE = {
+export const EXERCISE_FORCE_TYPE = {
   EASY: 'easy',
+  MEDIUM: 'medium',
   HARD: 'hard',
 } as const;
-type EXERCISE_FORCE_TYPE =
+export type EXERCISE_FORCE_TYPE =
   (typeof EXERCISE_FORCE_TYPE)[keyof typeof EXERCISE_FORCE_TYPE];
