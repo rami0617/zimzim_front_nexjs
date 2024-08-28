@@ -10,20 +10,24 @@ export interface GetExercisePayload {
   endDate: string;
 }
 
+export type ExerciseDetail = {
+  duration: string;
+  type: EXERCISE_TYPE;
+  force: EXERCISE_FORCE_TYPE;
+};
+
 export interface PostExercisePayload {
   userId: string;
   date: string;
-  duration: number;
-  type: EXERCISE_TYPE;
-  force: EXERCISE_FORCE_TYPE;
+  totalDuration: string;
+  detail: ExerciseDetail[];
 }
 
 export interface Exercise {
   _id: string;
   date: string;
-  duration: number;
-  type: EXERCISE_TYPE;
-  force: EXERCISE_FORCE_TYPE;
+  totalDuration: string;
+  detail: ExerciseDetail[];
 }
 
 export const EXERCISE_TYPE = {

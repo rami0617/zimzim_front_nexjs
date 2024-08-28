@@ -46,9 +46,11 @@ const LoginForm = () => {
           placeholder="Enter your ID"
           autoComplete="username"
           defaultValue=""
+          name="id"
           ref={idRef}
         />
         <Input
+          name="password"
           label="Password"
           type="password"
           placeholder="Enter your password"

@@ -1,10 +1,16 @@
-import React, { forwardRef, ChangeEvent, useState } from 'react';
+import React, { forwardRef, ChangeEvent, useState, MouseEvent } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import ErrorMessage from '#components/common/ErrorMessage';
 
 import ArrowDownIcon from '#assets/icon/angle-down-solid.svg?react';
 import ArrowUPIcon from '#assets/icon/angle-up-solid.svg?react';
+import { useEffect } from 'react';
+
+type Option = {
+  value: string;
+  name: string;
+};
 
 interface SelectBoxProps {
   label: string;
@@ -16,12 +22,8 @@ interface SelectBoxProps {
   onChange?: (event: ChangeEvent<HTMLSelectElement>) => void;
   errorMessage?: string;
   placeHolder: string;
-}
-
-type Option = {
   value: string;
-  name: string;
-};
+}
 
 const SelectBox = forwardRef<HTMLSelectElement, SelectBoxProps>(
   (
@@ -35,15 +37,24 @@ const SelectBox = forwardRef<HTMLSelectElement, SelectBoxProps>(
       onChange,
       errorMessage = '',
       placeHolder,
+      value,
     },
     ref,
   ) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [internalValue, setInternalValue] = useState<string | undefined>(
-      undefined,
+      value,
     );
 
-    const handleSelect = (value: Option['value']) => {
+    useEffect(() => {
+      if (value !== internalValue) {
+        setInternalValue(value);
+      }
+    }, [internalValue, value]);
+
+    const handleSelect = (e: MouseEvent, value: Option['value']) => {
+      e.stopPropagation();
+
       setIsOpen(false);
       setInternalValue(value);
 
@@ -68,12 +79,12 @@ const SelectBox = forwardRef<HTMLSelectElement, SelectBoxProps>(
             className={twMerge(
               `relative border-1 border-gray-dark px-4 h-12 inline-block content-center rounded-lg cursor-pointer ${selectClassName}`,
             )}
+            onClick={() => setIsOpen((prev) => !prev)}
           >
             <div
               className={twMerge(
                 `selected flex justify-between items-center ${internalValue ?? 'text-gray-dark'}`,
               )}
-              onClick={() => setIsOpen(true)}
             >
               <span>{internalValue ?? placeHolder}</span>
               {!isOpen && <ArrowDownIcon width={12} />}
@@ -85,7 +96,7 @@ const SelectBox = forwardRef<HTMLSelectElement, SelectBoxProps>(
                   <li
                     key={option.name}
                     className="option px-4 py-1"
-                    onClick={() => handleSelect(option.value)}
+                    onClick={(e: MouseEvent) => handleSelect(e, option.value)}
                   >
                     {option.name}
                   </li>
