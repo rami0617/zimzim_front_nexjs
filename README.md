@@ -10,6 +10,8 @@
 - Redux-toolkit
 - React-router-dom
 - TawilindCss
+- Chart.js
+- React-hook-form
 
 ### 기술 스택 도입
 
@@ -22,7 +24,9 @@
 - tailwindCSS
   - 유틸리티 기반의 css 프레임워크로 빠르고 일관된 디자인을 적용하기 위해 선택했습니다.
 - react-hook-form
+  - 리액트에서 폼을 관리하는 라이브러리 중 가장 마운트하는 속도가 빠르고 validation 라이브러리들과 결합이 잘되기에 선택했습니다.
 - yup
+  - validation 라이브러리 중 react-hook-form과 결합이 잘되고 타입스크립트 지원되어 선택했습니다.
 - chart.js
   - 프로젝트에서 대부분 단순한 차트를 표시할 예정이기 때문에, 다양한 커스터마이징이 가능한 D3.js보다는 간소한된 API를 제공하는 chart.js를 선택했습니다.
 - clsx
@@ -44,6 +48,8 @@
 
 1. input의 공통컴포넌트를 만들 때 controlled component와 uncontrolled component로 나누어 만드는 것은 어떨까?
    링크(https://ramirami.tistory.com/200)
+2. 공통 SelectBox 만들기
+   링크(https://ramirami.tistory.com/201)
 
 ## 기능
 
@@ -51,4 +57,5 @@
   ![화면 기록 2024-08-25 오후 12 37 02](https://github.com/user-attachments/assets/b42db316-fc60-49fc-9191-987e0af24e3b)
 - 회원가입
 - 운동기록 추가, 수정, 삭제
+  ![화면 기록 2024-08-29 오후 1 16 36](https://github.com/user-attachments/assets/d30bca43-00aa-4bf2-9f6d-d8969e736344)
 - 운동기록 차트로 보기
