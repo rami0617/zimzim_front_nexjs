@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '../common/Button';
+import Button from '../components/common/Button';
 
 const ExerciseList = () => {
   const navigate = useNavigate();

@@ -1,11 +1,18 @@
-import React, { forwardRef, ChangeEvent, useState, MouseEvent } from 'react';
+import React, {
+  forwardRef,
+  ChangeEvent,
+  useState,
+  MouseEvent,
+  useEffect,
+} from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import ErrorMessage from '#components/common/ErrorMessage';
 
+import useSelectBox from '#hooks/useSelectBox';
+
 import ArrowDownIcon from '#assets/icon/angle-down-solid.svg?react';
 import ArrowUPIcon from '#assets/icon/angle-up-solid.svg?react';
-import { useEffect } from 'react';
 
 type Option = {
   value: string;
@@ -46,6 +53,15 @@ const SelectBox = forwardRef<HTMLSelectElement, SelectBoxProps>(
       value,
     );
 
+    const { handleClcikWithoutSelectBox } = useSelectBox(setIsOpen);
+
+    useEffect(() => {
+      document.addEventListener('click', handleClcikWithoutSelectBox);
+
+      return () =>
+        document.removeEventListener('click', handleClcikWithoutSelectBox);
+    }, [handleClcikWithoutSelectBox]);
+
     useEffect(() => {
       if (value !== internalValue) {
         setInternalValue(value);
@@ -77,13 +93,13 @@ const SelectBox = forwardRef<HTMLSelectElement, SelectBoxProps>(
           </label>
           <div
             className={twMerge(
-              `relative border-1 border-gray-dark px-4 h-12 inline-block content-center rounded-lg cursor-pointer ${selectClassName}`,
+              `custom-selected-box relative border-1 border-gray-dark px-4 h-12 inline-block content-center rounded-lg cursor-pointer ${selectClassName}`,
             )}
             onClick={() => setIsOpen((prev) => !prev)}
           >
             <div
               className={twMerge(
-                `selected flex justify-between items-center ${internalValue ?? 'text-gray-dark'}`,
+                `custom-selected-box selected flex justify-between items-center ${internalValue ?? 'text-gray-dark'}`,
               )}
             >
               <span>{internalValue ?? placeHolder}</span>
@@ -91,7 +107,7 @@ const SelectBox = forwardRef<HTMLSelectElement, SelectBoxProps>(
               {isOpen && <ArrowUPIcon width={12} />}
             </div>
             {isOpen && (
-              <ul className="options absolute left-0 right-0 mt-3.5 z-10 bg-white border-gray-dark last:border-b-1 border-t-1 border-l-1 border-r-1 rounded-md">
+              <ul className="custom-selected-box options absolute left-0 right-0 mt-3.5 z-10 bg-white border-gray-dark last:border-b-1 border-t-1 border-l-1 border-r-1 rounded-md">
                 {options.map((option) => (
                   <li
                     key={option.name}

@@ -12,34 +12,36 @@ import DashboardPage from '#pages/DashboardPage';
 import LoginPage from '#pages/LoginPage';
 import SignUpPage from '#pages/SignUpPage';
 import ExercisePage from '#pages/ExercisePage';
+import ExerciseList from '#/pages/ExerciseList';
+import ExercisePost from '#/pages/ExercisePost';
 import WaterPage from '#pages/WaterPage';
 import NotFoundPage from '#pages/NotFoundPage';
+import { useEffect } from 'react';
 
-import ExercisePost from '#components/exercise/ExercisePost';
-import ExerciseList from '#components/exercise/ExerciseList';
-
-const App = () => (
-  <Provider store={store}>
-    <Router>
-      <Routes>
-        <Route element={<AuthGuard />}>
-          <Route element={<UserLayout />}>
-            <Route path="/" element={<DashboardPage />} />
-            <Route path="/exercise" element={<ExercisePage />}>
-              <Route path="" element={<ExerciseList />} />
-              <Route path="post" element={<ExercisePost />} />
+const App = () => {
+  return (
+    <Provider store={store}>
+      <Router>
+        <Routes>
+          <Route element={<AuthGuard />}>
+            <Route element={<UserLayout />}>
+              <Route path="/" element={<DashboardPage />} />
+              <Route path="/exercise" element={<ExercisePage />}>
+                <Route path="" element={<ExerciseList />} />
+                <Route path="post" element={<ExercisePost />} />
+              </Route>
+              <Route path="/water" element={<WaterPage />} />
             </Route>
-            <Route path="/water" element={<WaterPage />} />
           </Route>
-        </Route>
-        <Route element={<CommonLayout />}>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/sign-up" element={<SignUpPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Route>
-      </Routes>
-    </Router>
-  </Provider>
-);
+          <Route element={<CommonLayout />}>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/sign-up" element={<SignUpPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+        </Routes>
+      </Router>
+    </Provider>
+  );
+};
 
 export default App;

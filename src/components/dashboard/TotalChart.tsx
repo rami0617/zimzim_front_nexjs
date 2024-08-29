@@ -46,11 +46,11 @@ const TotalChart = () => {
     datasets: [
       {
         data: dateRagne.map((date) => {
-          const filter = exerciseData.filter(
+          const filter = exerciseData?.filter(
             (exercise) => dayjs(exercise.date).format('YYYY-MM-DD') === date,
           );
 
-          if (filter.length > 0) {
+          if (filter?.length > 0) {
             return filter[0].totalDuration;
           } else {
             return '0';
