@@ -34,34 +34,15 @@ const ExerciseForm = () => {
 
   const schema: yup.ObjectSchema<ExercisePostFormInput> = yup.object().shape({
     date: yup.string().required('날짜를 입력해주세요'),
-    duration: yup
-      .string()
-      .test('duration-check', '운동 시간을 입력해 주세요', (value, context) => {
-        console.log(context.options);
-        if (context.options.context?.exerciseList.length >= 1) return true;
-        return value !== undefined && value !== '';
-      })
-      .required(''),
+    duration: yup.string().required('운동 시간을 입력해 주세요'),
     type: yup
       .mixed<EXERCISE_TYPE>()
       .oneOf(Object.values(EXERCISE_TYPE))
-      .test('', '운동 종류를 입력해주세요', (value) => {
-        if (exerciseList.length > 0 || value !== undefined) {
-          return true;
-        }
-        return false;
-      })
-      .required(''),
+      .required('운동 종류를 입력해주세요'),
     forceType: yup
       .mixed<EXERCISE_FORCE_TYPE>()
       .oneOf(Object.values(EXERCISE_FORCE_TYPE))
-      .test('', '운동 강도를 입력해주세요', (value) => {
-        if (exerciseList.length > 0 || value !== undefined) {
-          return true;
-        }
-        return false;
-      })
-      .required(''),
+      .required('운동 강도를 입력해주세요'),
   });
 
   const {
@@ -72,7 +53,7 @@ const ExerciseForm = () => {
     formState: { errors },
   } = useForm<ExercisePostFormInput>({
     resolver: yupResolver(schema),
-    context: { exerciseList },
+    defaultValues: { date: today },
   });
 
   useEffect(() => {
@@ -94,10 +75,11 @@ const ExerciseForm = () => {
           setExerciseList([...newExerciseList]);
           reset({
             date: today,
-            duration: ' ',
+            duration: '',
             type: undefined,
             forceType: undefined,
           });
+          trigger();
         }
       }
 
@@ -105,76 +87,75 @@ const ExerciseForm = () => {
     });
 
     return () => subscription.unsubscribe();
-  }, [watch, trigger, exerciseList]);
+  }, [watch, trigger, exerciseList, reset, today]);
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    try {
-      const promises = [];
-      let isSameDate = false;
+    if (exerciseList.length > 0) {
+      try {
+        const promises = [];
+        let isSameDate = false;
 
-      if (exerciseList.length > 1) {
-        isSameDate = exerciseList[0].date === exerciseList[1].date;
-      }
+        if (exerciseList.length > 1) {
+          isSameDate = exerciseList[0].date === exerciseList[1].date;
+        }
 
-      if (isSameDate) {
-        let totalDuration = exerciseList.reduce(
-          (acc, cur) => acc + Number(cur.duration),
-          0,
-        );
-
-        const detail = exerciseList.map((exercise) => {
-          return {
-            type: exercise.type,
-            duration: exercise.duration,
-            force: exercise.forceType,
-          };
-        });
-
-        const array = {
-          date: exerciseList[0].date,
-          totalDuration: totalDuration.toString(),
-          userId: userState?.id ?? '',
-          detail: detail,
-        };
-
-        promises.push(dispatch(postExercise(array)));
-      } else {
-        const array = exerciseList.map((exercise) => {
-          dispatch(
-            postExercise({
-              userId: userState?.id ?? '',
-              totalDuration: exercise.duration,
-              date: exercise.date,
-              detail: [
-                {
-                  type: exercise.type,
-                  duration: exercise.duration,
-                  force: exercise.forceType,
-                },
-              ],
-            }),
+        if (isSameDate) {
+          let totalDuration = exerciseList.reduce(
+            (acc, cur) => acc + Number(cur.duration),
+            0,
           );
+
+          const detail = exerciseList.map((exercise) => {
+            return {
+              type: exercise.type,
+              duration: exercise.duration,
+              force: exercise.forceType,
+            };
+          });
+
+          const array = {
+            date: exerciseList[0].date,
+            totalDuration: totalDuration.toString(),
+            userId: userState?.id ?? '',
+            detail: detail,
+          };
+
+          promises.push(dispatch(postExercise(array)));
+        } else {
+          const array = exerciseList.map((exercise) => {
+            dispatch(
+              postExercise({
+                userId: userState?.id ?? '',
+                totalDuration: exercise.duration,
+                date: exercise.date,
+                detail: [
+                  {
+                    type: exercise.type,
+                    duration: exercise.duration,
+                    force: exercise.forceType,
+                  },
+                ],
+              }),
+            );
+          });
+
+          promises.push(...array);
+        }
+
+        Promise.allSettled(promises).then((result) => {
+          alert('등록이 완료 되었습니다');
+          navigate('/');
         });
-
-        promises.push(...array);
+      } catch (error) {
+        console.log(error, 'error');
       }
-
-      Promise.allSettled(promises).then((result) => {
-        alert('등록이 완료 되었습니다');
-        navigate('/');
-      });
-    } catch (error) {
-      console.log(error, 'error');
     }
   };
 
   return (
-    <form
-      onSubmit={(event: FormEvent<HTMLFormElement>) => onSubmit(event)}
-      className="flex flex-col gap-6"
-    >
+    <form onSubmit={onSubmit} className="flex flex-col gap-6">
       <div className="flex flex-col gap-10">
         <Controller
           name="date"
