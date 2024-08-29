@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Water = () => {
+const WaterPage = () => {
   return <div>Water</div>;
 };
 
-export default Water;
+export default WaterPage;

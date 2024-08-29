@@ -88,8 +88,8 @@ const SignupForm = () => {
   };
 
   return (
-    <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col">
+    <form className="flex flex-col gap-12" onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col gap-6">
         <Input
           label="ID"
           placeholder="Enter your ID"

@@ -11,7 +11,6 @@ interface MenuItemProps {
 const MenuItem = ({ to, Icon, title }: MenuItemProps) => (
   <NavLink
     to={to}
-    end
     className={({ isActive }) =>
       clsx('group flex flex-row h-12 p-2 items-center gap-3 rounded-lg', {
         'bg-secondary-light/70 text-white': isActive,
