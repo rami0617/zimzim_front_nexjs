@@ -5,7 +5,7 @@ import SocialLoginButton from '#components/login/SocialLoginButton';
 import SignUpLink from '#components/login/SignUpLink';
 import ContentBox from '#components/common/ContentBox';
 
-const Login = () => (
+const LoginPage = () => (
   <main className="flex flex-row h-full justify-between px-24">
     <div className="flex flex-col relative h-full justify-center">
       <div className="flex flex-row relative">
@@ -37,4 +37,4 @@ const Login = () => (
   </main>
 );
 
-export default Login;
+export default LoginPage;

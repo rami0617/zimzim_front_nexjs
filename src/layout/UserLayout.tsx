@@ -22,7 +22,7 @@ const UserLayout = () => {
     <div className="w-screen h-screen bg-secondary-light/25">
       <div className="w-screen h-screen flex flex-row">
         <Menu />
-        <div className="w-5/6 flex flex-col">
+        <div className="w-5/6 flex flex-col h-full">
           <UserHeader />
           <Outlet />
         </div>

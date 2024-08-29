@@ -4,35 +4,44 @@ import { Provider } from 'react-redux';
 
 import { store } from '#stores/store';
 
-import Dashboard from '#pages/Dashboard';
-import Login from '#pages/Login';
-import SignUp from '#pages/SignUp';
-import Exercise from '#pages/Exercise';
-import Water from '#pages/Water';
-
 import UserLayout from '#layout/UserLayout';
 import CommonLayout from '#layout/CommonLayout';
+import AuthGuard from '#/layout/AuthGuard';
 
-import AuthGuard from '#components/common/AuthGuard';
+import DashboardPage from '#pages/DashboardPage';
+import LoginPage from '#pages/LoginPage';
+import SignUpPage from '#pages/SignUpPage';
+import ExercisePage from '#pages/ExercisePage';
+import ExerciseList from '#/pages/ExerciseList';
+import ExercisePost from '#/pages/ExercisePost';
+import WaterPage from '#pages/WaterPage';
+import NotFoundPage from '#pages/NotFoundPage';
+import { useEffect } from 'react';
 
-const App = () => (
-  <Provider store={store}>
-    <Router>
-      <AuthGuard>
+const App = () => {
+  return (
+    <Provider store={store}>
+      <Router>
         <Routes>
-          <Route element={<UserLayout />}>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/exercise" element={<Exercise />} />
-            <Route path="/water" element={<Water />} />
+          <Route element={<AuthGuard />}>
+            <Route element={<UserLayout />}>
+              <Route path="/" element={<DashboardPage />} />
+              <Route path="/exercise" element={<ExercisePage />}>
+                <Route path="" element={<ExerciseList />} />
+                <Route path="post" element={<ExercisePost />} />
+              </Route>
+              <Route path="/water" element={<WaterPage />} />
+            </Route>
           </Route>
           <Route element={<CommonLayout />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/sign-up" element={<SignUp />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/sign-up" element={<SignUpPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>
-      </AuthGuard>
-    </Router>
-  </Provider>
-);
+      </Router>
+    </Provider>
+  );
+};
 
 export default App;

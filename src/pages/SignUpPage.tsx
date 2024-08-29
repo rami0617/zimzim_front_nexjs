@@ -3,7 +3,7 @@ import React from 'react';
 import ContentBox from '#components/common/ContentBox';
 import SignupForm from '#components/signup/SignupForm';
 
-const SignUp = () => (
+const SignUpPage = () => (
   <div className="flex justify-center">
     <ContentBox className="rounded-2xl gap-6">
       <div className="text-center text-xl">Let’s get started with ZIMZIM</div>
@@ -12,4 +12,4 @@ const SignUp = () => (
   </div>
 );
 
-export default SignUp;
+export default SignUpPage;
