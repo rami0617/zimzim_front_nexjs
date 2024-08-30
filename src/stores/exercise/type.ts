@@ -6,8 +6,8 @@ export interface ExerciseState {
 
 export interface GetExercisePayload {
   userId: string;
-  startDate: string;
-  endDate: string;
+  startDate?: string;
+  endDate?: string;
 }
 
 export type ExerciseDetail = {

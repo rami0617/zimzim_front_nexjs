@@ -24,7 +24,7 @@ const AuthGuard = () => {
   }
 
   return (
-    <div>
+    <div className="container">
       <Outlet />
     </div>
   );

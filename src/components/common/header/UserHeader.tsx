@@ -23,8 +23,21 @@ const UserHeader = () => {
   };
 
   return (
-    <div className="flex gap-4 justify-end h-20 bg-white items-center px-6">
-      <div className="flex flex-row items-center gap-4">
+    <div className="flex gap-4 justify-between w-full h-20 bg-white items-center">
+      <div className="flex flex-row items-center w-1/6 justify-center">
+        <NavLink
+          to="/"
+          end
+          className="flex flex-row justify-center items-center gap-2"
+        >
+          <img
+            src="src/assets/icon/icon.svg"
+            alt="icon"
+            style={{ width: 48, height: 48 }}
+          />
+        </NavLink>
+      </div>
+      <div className="flex flex-row gap-4 pr-8">
         <NavLink to="/user">
           <div className="bg-secondary-light/70 p-2 rounded-full border-1 hover:bg-secondary-light">
             <UserIcon

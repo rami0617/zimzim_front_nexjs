@@ -12,7 +12,6 @@ import dayjs from 'dayjs';
 
 import { AppDispatch, RootState } from '#/stores/store';
 import { getExercise } from '#/stores/exercise/action';
-import { Exercise } from '#/stores/exercise/type';
 import { useNavigate } from 'react-router-dom';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);

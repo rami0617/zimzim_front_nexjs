@@ -16,16 +16,16 @@ const UserLayout = () => {
     if (!userId) {
       dispatch(getUserInfo());
     }
-  }, []);
+  }, [dispatch, userId]);
 
   return (
-    <div className="w-screen h-screen bg-secondary-light/25">
-      <div className="w-screen h-screen flex flex-row">
+    <div className="min-h-screen w-screen flex flex-col bg-secondary-light/25">
+      <UserHeader />
+      <div className="flex flex-1 overflow-hidden">
         <Menu />
-        <div className="w-5/6 flex flex-col h-full">
-          <UserHeader />
+        <main className="flex-1 overflow-auto p-6">
           <Outlet />
-        </div>
+        </main>
       </div>
     </div>
   );
