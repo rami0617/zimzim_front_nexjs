@@ -8,6 +8,7 @@
 - Typescript
 - Vite
 - Redux-toolkit
+- Tanstack-query
 - React-router-dom
 - TawilindCss
 - Chart.js
@@ -21,6 +22,8 @@
   - webpack은 다양하게 커스터마이징 할 수 있다는 장점이 있지만 세밀한 설정이 필요 없었고, 가볍고 빠르게 개발할 수 있는 vite를 선택하게 되었습니다.
 - redux-toolkit
   - react가 가지고 있는 단방향 데이터 흐름과 일치하는 flux 패턴 기반의 상태관리 라이브러리로 상태관리를 간소화하고 예측 가능하게 해줍니다.
+- Tanstack-query
+  - 같은 정보들을 반복하여 서버에 요청해야하는 경우가 있어 데이터 캐싱을 위해 도입했습니다.
 - tailwindCSS
   - 유틸리티 기반의 css 프레임워크로 빠르고 일관된 디자인을 적용하기 위해 선택했습니다.
 - react-hook-form

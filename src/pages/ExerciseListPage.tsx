@@ -48,7 +48,7 @@ const columns = [
   }),
 ];
 
-const ExerciseList = () => {
+const ExerciseListPage = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch<AppDispatch>();
@@ -126,4 +126,4 @@ const ExerciseList = () => {
   );
 };
 
-export default ExerciseList;
+export default ExerciseListPage;

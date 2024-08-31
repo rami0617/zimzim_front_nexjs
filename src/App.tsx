@@ -1,21 +1,21 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import { store } from '#stores/store';
 
-import UserLayout from '#layout/UserLayout';
-import CommonLayout from '#layout/CommonLayout';
-import AuthGuard from '#/layout/AuthGuard';
-
 import DashboardPage from '#pages/DashboardPage';
+import ExercisePage from '#pages/ExercisePage';
+import ExerciseListPage from '#/pages/ExerciseListPage';
+import ExercisePost from '#pages/ExercisePost';
+import WaterPage from '#pages/WaterPage';
 import LoginPage from '#pages/LoginPage';
 import SignUpPage from '#pages/SignUpPage';
-import ExercisePage from '#pages/ExercisePage';
-import ExerciseList from '#/pages/ExerciseList';
-import ExercisePost from '#/pages/ExercisePost';
-import WaterPage from '#pages/WaterPage';
 import NotFoundPage from '#pages/NotFoundPage';
+
+import AuthGuard from '#layout/AuthGuard';
+import UserLayout from '#layout/UserLayout';
+import CommonLayout from '#layout/CommonLayout';
 
 const App = () => {
   return (
@@ -26,7 +26,7 @@ const App = () => {
             <Route element={<UserLayout />}>
               <Route path="/" element={<DashboardPage />} />
               <Route path="/exercise" element={<ExercisePage />}>
-                <Route path="" element={<ExerciseList />} />
+                <Route path="" element={<ExerciseListPage />} />
                 <Route path="post" element={<ExercisePost />} />
               </Route>
               <Route path="/water" element={<WaterPage />} />

@@ -1,14 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
+import CIIcon from '#assets/icon/icon.svg?react';
+
 const Header = () => (
-  <header>
+  <header className="w-[60px]">
     <NavLink to="/">
-      <img
-        src="src/assets/icon/icon.svg"
-        alt="icon"
-        style={{ width: 48, height: 48 }}
-      />
+      <CIIcon width={48} height={48} />
     </NavLink>
   </header>
 );

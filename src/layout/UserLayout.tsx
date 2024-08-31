@@ -19,7 +19,7 @@ const UserLayout = () => {
   }, [dispatch, userId]);
 
   return (
-    <div className="min-h-screen w-screen flex flex-col bg-secondary-light/25">
+    <div className="min-h-screen w-screen flex flex-col bg-secondary-light/50">
       <UserHeader />
       <div className="flex flex-1 overflow-hidden">
         <Menu />
