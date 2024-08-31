@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Line } from 'react-chartjs-2';
 import {
@@ -12,7 +13,6 @@ import dayjs from 'dayjs';
 
 import { AppDispatch, RootState } from '#/stores/store';
 import { getExercise } from '#/stores/exercise/action';
-import { useNavigate } from 'react-router-dom';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
@@ -56,21 +56,34 @@ const TotalChart = () => {
           }
         }),
         fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1,
+        borderColor: '#98abf9',
+        pointStyle: false,
       },
     ],
   };
 
   const options = {
     responsive: true,
-    maintainAspectRatio: false,
+    // maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
       },
+      // title: {
+      //   display: true,
+      //   text: 'Total workout volume',
+      //   color: 'black',
+      //   align: 'start',
+      //   position: 'top',
+      // },
     },
+
     scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+      },
       y: {
         min: 0,
         max: 120,
@@ -79,16 +92,15 @@ const TotalChart = () => {
   };
 
   return (
-    <div className="flex justify-center pt-10 ">
-      <div className="w-4/5 h-80 bg-white p-4 rounded-lg border-1 border-gray-light">
-        <Line
-          data={data}
-          options={options}
-          onClick={() => {
-            navigate('/exercise');
-          }}
-        />
-      </div>
+    <div className="w-2/3 bg-white rounded-lg border-1 border-gray-light py-2 px-4 cursor-pointer">
+      <p className="text-sm font-bold pb-2">Total workout volume</p>
+      <Line
+        data={data}
+        options={options}
+        onClick={() => {
+          navigate('/exercise');
+        }}
+      />
     </div>
   );
 };
