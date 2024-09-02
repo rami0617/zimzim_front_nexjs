@@ -9,19 +9,17 @@ import { RootState } from '#/stores/store';
 const AuthGuard = () => {
   const navigate = useNavigate();
 
-  const user = useSelector((state: RootState) => state.user);
-
   useEffect(() => {
     setNavigateFunction(navigate);
   }, [navigate]);
 
-  if (
-    !user &&
-    location.pathname !== '/login' &&
-    location.pathname !== '/sign-up'
-  ) {
-    return <Navigate to="/login" />;
-  }
+  // if (
+  //   // !user &&
+  //   location.pathname !== '/login' &&
+  //   location.pathname !== '/sign-up'
+  // ) {
+  //   return <Navigate to="/login" />;
+  // }
 
   return (
     <div className="container">

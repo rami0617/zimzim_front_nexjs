@@ -13,17 +13,15 @@ import { twMerge } from 'tailwind-merge';
 import Button from '#components/common/Button';
 import ContentBox from '#/components/common/ContentBox';
 
-import { Exercise } from '#/stores/exercise/type';
-
 import {
   useDeleteExerciseDetailMutation,
   useGetExerciseListQuery,
-} from '#/api/exerciseApi';
-import { useGetUserInfoQuery } from '#/api/userApi';
+} from '#/api/services/exerciseApi';
+import { useGetUserInfoQuery } from '#/api/services/userApi';
+import { Exercise } from '#/api/type';
 
 import LeftArrowIcon from '#assets/icon/left-arrow.svg?react';
 import RightArrowIcon from '#assets/icon/right-arrow.svg?react';
-import MenuItem from '#/components/common/menu/MenuItem';
 
 type FlattenedExercise = Pick<Exercise, 'date'> &
   Pick<Exercise['detail'][number], 'type' | 'duration' | 'force'>;
@@ -68,7 +66,6 @@ const ExerciseListPage = () => {
           type="checkbox"
           checked={checkedExercise.includes(row.original._id)}
           onChange={() => {
-            console.log(row);
             toggleRowSelected(row.original._id);
           }}
         />
@@ -149,7 +146,6 @@ const ExerciseListPage = () => {
           })),
         ),
       );
-      console.log(flattenedData);
     }
   }, [exerciseData]);
 
@@ -157,9 +153,12 @@ const ExerciseListPage = () => {
     <div className="flex flex-col items-center gap-4">
       <div className="flex flex-row justify-end w-4/5 pb-2 gap-4">
         <Button
-          className="bg-red-500 w-[120px] h-12 rounded-lg text-white font-bold text-md border-1 border-gray-light"
+          className={twMerge(
+            `bg-red-500 w-[120px] h-12 rounded-lg text-white font-bold text-md border-1 border-gray-light
+            ${checkedExercise.length === 0 && 'cursor-not-allowed'}`,
+          )}
+          disabled={checkedExercise.length === 0}
           onClick={async () => {
-            console.log(checkedExercise);
             let temp = [...checkedExercise].flatMap((exercise) =>
               exerciseData?.items.filter((item) =>
                 item.detail.find((ele) => ele._id === exercise),
@@ -182,13 +181,11 @@ const ExerciseListPage = () => {
                 detailIds: filteredDetails,
               };
             });
-            console.log(payload);
             try {
               await deleteExerciseDetail(payload).unwrap();
             } catch (error) {
               console.log(error);
             }
-            //
           }}
         >
           삭제

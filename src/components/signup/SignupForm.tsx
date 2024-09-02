@@ -8,11 +8,11 @@ import * as yup from 'yup';
 import Button from '#components/common/Button';
 import Input from '#components/common/Input';
 
-import { signUp } from '#stores/auth/action';
 import { AppDispatch } from '#stores/store';
 
 import EyeSlashIcon from '#assets/icon/eye-slash-regular.svg?react';
 import EyeIcon from '#assets/icon/eye-regular.svg?react';
+import { usePostSignupMutation } from '#/api/services/authApi';
 
 export type SingnUpFormInput = {
   id: string;
@@ -22,6 +22,8 @@ export type SingnUpFormInput = {
 };
 
 const SignupForm = () => {
+  const [postSignup, { isSuccess }] = usePostSignupMutation();
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
@@ -75,10 +77,10 @@ const SignupForm = () => {
 
   const onSubmit = async (data: SingnUpFormInput) => {
     try {
-      const resultAction = await dispatch(signUp(data));
+      await postSignup(data);
 
-      if (signUp.fulfilled.match(resultAction)) {
-        navigate('/dashboard');
+      if (isSuccess) {
+        navigate('/login');
       } else {
         console.log('다시 한번 시도해 주세요');
       }

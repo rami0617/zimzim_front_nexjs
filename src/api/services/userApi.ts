@@ -1,6 +1,5 @@
-import { User } from '#/stores/auth/type';
-
 import { baseApi } from '#api/baseApi';
+import { User } from '#api/type';
 
 export const userApi = baseApi.injectEndpoints({
   endpoints: (build) => ({

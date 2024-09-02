@@ -4,8 +4,6 @@ import { Outlet } from 'react-router-dom';
 import Menu from '#components/common/menu/Menu';
 import UserHeader from '#components/common/header/UserHeader';
 
-import { useGetUserInfoQuery } from '#/api/userApi';
-
 const UserLayout = () => {
   return (
     <div className="min-h-screen w-screen flex flex-col bg-secondary-light/50">

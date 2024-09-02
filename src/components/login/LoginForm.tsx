@@ -1,18 +1,13 @@
 import React, { useRef, useState, FormEvent } from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '#components/common/Button';
 import Input from '#components/common/Input';
 import ErrorMessage from '#components/common/ErrorMessage';
 
-import { AppDispatch } from '#stores/store';
-import { setUser } from '#/stores/user/slice';
-
-import { usePostLoginMutation } from '#/api/authApi';
+import { usePostLoginMutation } from '#/api/services/authApi';
 
 const LoginForm = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   const [postLogin] = usePostLoginMutation();
@@ -29,12 +24,11 @@ const LoginForm = () => {
       setHasError(true);
     } else {
       try {
-        const result = await postLogin({
+        await postLogin({
           id: idRef.current?.value ?? '',
           password: passwordRef.current?.value ?? '',
         }).unwrap();
 
-        dispatch(setUser(result));
         navigate('/');
       } catch (error) {
         console.error('Error during login:', error);

@@ -10,11 +10,14 @@ import Input from '#components/common/Input';
 import SelectBox from '#components/common/SelectBox';
 import Badge from '#components/exercise/Badge';
 
-import { EXERCISE_FORCE_TYPE, EXERCISE_TYPE } from '#stores/exercise/type';
 import { AppDispatch, RootState } from '#stores/store';
 
 import DeleteIcon from '#assets/icon/delete.svg?react';
-import { exerciseApi, usePostExerciseMutation } from '#/api/exerciseApi';
+import { EXERCISE_FORCE_TYPE, EXERCISE_TYPE } from '#/api/type';
+import {
+  exerciseApi,
+  usePostExerciseMutation,
+} from '#/api/services/exerciseApi';
 
 export type ExercisePostFormInput = {
   date: string;
@@ -31,7 +34,6 @@ const ExerciseForm = () => {
   const today = new Date().toISOString().split('T')[0];
 
   const dispatch = useDispatch<AppDispatch>();
-  const userState = useSelector((state: RootState) => state.user.user);
 
   const navigate = useNavigate();
 

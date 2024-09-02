@@ -4,8 +4,8 @@ import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import dayjs from 'dayjs';
 
-import { useGetUserInfoQuery } from '#/api/userApi';
-import { useGetExerciseQuery } from '#/api/exerciseApi';
+import { useGetUserInfoQuery } from '#/api/services/userApi';
+import { useGetExerciseQuery } from '#/api/services/exerciseApi';
 
 import WeightIcon from '#assets/icon/chart/weight.svg';
 import CardioIcon from '#assets/icon/chart/cardio.svg';

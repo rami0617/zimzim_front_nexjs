@@ -1,10 +1,7 @@
-import {
-  Exercise,
-  GetExercisePayload,
-  PostExercisePayload,
-} from '#/stores/exercise/type';
 import { AxiosResponse } from 'axios';
-import { baseApi } from './baseApi';
+
+import { baseApi } from '#api/baseApi';
+import { Exercise, GetExercisePayload, PostExercisePayload } from '#api/type';
 
 export const exerciseApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -21,7 +18,7 @@ export const exerciseApi = baseApi.injectEndpoints({
       providesTags: (result, error, arg) =>
         result
           ? result.map((exercise) => ({ type: 'Exercise', id: exercise._id }))
-          : [{ type: 'Exercise', id: 'LIST' }],
+          : [{ type: 'Exercise', id: 'Exercise' }],
     }),
     getExerciseList: build.query<
       {

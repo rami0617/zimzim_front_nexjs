@@ -4,9 +4,8 @@ import dayjs from 'dayjs';
 import TotalChart from '#components/dashboard/TotalChart';
 import ExerciseChart from '#/components/dashboard/ExerciseChart';
 import WaterChart from '#/components/dashboard/WaterChart';
-
-import { useGetUserInfoQuery } from '#/api/userApi';
-import { useGetExerciseQuery } from '#/api/exerciseApi';
+import { useGetUserInfoQuery } from '#/api/services/userApi';
+import { useGetExerciseQuery } from '#/api/services/exerciseApi';
 
 const DashboardPage = () => {
   const [totalDuration, setTotalDuration] = useState(0);
@@ -14,20 +13,17 @@ const DashboardPage = () => {
   const { data: userState, isLoading: isUserInfoLoading } =
     useGetUserInfoQuery();
 
-  const {
-    data: exerciseState,
-    isLoading: isExerciseLoading,
-    isSuccess,
-  } = useGetExerciseQuery(
-    {
-      userId: userState?.id ?? '',
-      startDate: dayjs().subtract(7, 'day').format('YYYY-MM-DD'),
-      endDate: dayjs().format('YYYY-MM-DD'),
-    },
-    {
-      skip: !userState?.id,
-    },
-  );
+  const { data: exerciseState, isLoading: isExerciseLoading } =
+    useGetExerciseQuery(
+      {
+        userId: userState?.id ?? '',
+        startDate: dayjs().subtract(7, 'day').format('YYYY-MM-DD'),
+        endDate: dayjs().format('YYYY-MM-DD'),
+      },
+      {
+        skip: !userState?.id,
+      },
+    );
 
   useEffect(() => {
     if (exerciseState?.length) {

@@ -10,8 +10,8 @@ import {
 } from 'chart.js';
 import dayjs from 'dayjs';
 
-import { useGetExerciseQuery } from '#/api/exerciseApi';
-import { useGetUserInfoQuery } from '#/api/userApi';
+import { useGetUserInfoQuery } from '#/api/services/userApi';
+import { useGetExerciseQuery } from '#/api/services/exerciseApi';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
