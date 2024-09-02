@@ -1,26 +1,53 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-
-import { RootState } from '#/stores/store';
+import React, { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
 
 import TotalChart from '#components/dashboard/TotalChart';
 import ExerciseChart from '#/components/dashboard/ExerciseChart';
 import WaterChart from '#/components/dashboard/WaterChart';
 
+import { useGetUserInfoQuery } from '#/api/userApi';
+import { useGetExerciseQuery } from '#/api/exerciseApi';
+
 const DashboardPage = () => {
-  const userState = useSelector((state: RootState) => state.user);
-  const exerciseState = useSelector(
-    (state: RootState) => state.exercise.exercise,
+  const [totalDuration, setTotalDuration] = useState(0);
+
+  const { data: userState, isLoading: isUserInfoLoading } =
+    useGetUserInfoQuery();
+
+  const {
+    data: exerciseState,
+    isLoading: isExerciseLoading,
+    isSuccess,
+  } = useGetExerciseQuery(
+    {
+      userId: userState?.id ?? '',
+      startDate: dayjs().subtract(7, 'day').format('YYYY-MM-DD'),
+      endDate: dayjs().format('YYYY-MM-DD'),
+    },
+    {
+      skip: !userState?.id,
+    },
   );
-  const totalDuration = exerciseState.reduce(
-    (acc, cur) => acc + parseFloat(cur.totalDuration),
-    0,
-  );
+
+  useEffect(() => {
+    if (exerciseState?.length) {
+      setTotalDuration(
+        exerciseState.reduce(
+          (acc, cur) => acc + parseFloat(cur.totalDuration),
+          0,
+        ),
+      );
+    }
+  }, [exerciseState]);
+
+  if (isUserInfoLoading || isExerciseLoading) {
+    return <div>loading~</div>;
+  }
 
   return (
     <div className="flex flex-col gap-4 px-10">
       <p className="text-lg pt-2">
-        ✅ {userState.user?.nickname}님, 이번주 {exerciseState.length}회{' '}
+        ✅ {userState?.nickname}님, 이번주 {exerciseState?.length}회{' '}
         {totalDuration}분 운동했어요
       </p>
       <div className="flex flex-col gap-6">

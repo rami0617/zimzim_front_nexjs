@@ -10,7 +10,7 @@
 - Redux-toolkit
 - Tanstack-query
 - React-router-dom
-- TawilindCss
+- TailwindCss
 - Chart.js
 - React-hook-form
 

@@ -1,9 +1,13 @@
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import axios from 'axios';
 
 let navigateFunction: (path: string) => void;
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 axiosInstance.interceptors.request.use(
@@ -13,7 +17,7 @@ axiosInstance.interceptors.request.use(
     if (!url?.startsWith('/auth/sign-up')) {
       config.withCredentials = true;
     }
-
+    console.log('hello~', config);
     return config;
   },
   (error) => {
@@ -23,6 +27,7 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (response) => {
+    console.log(response, 'response~');
     return response.data;
   },
   async (error) => {

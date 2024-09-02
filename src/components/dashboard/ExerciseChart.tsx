@@ -1,25 +1,40 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
 
-import { RootState } from '#/stores/store';
+import { useGetUserInfoQuery } from '#/api/userApi';
+import { useGetExerciseQuery } from '#/api/exerciseApi';
 
-import WeightIcon from '#assets/icon/chart/weight.png';
-import CardioIcon from '#assets/icon/chart/cardio.png';
+import WeightIcon from '#assets/icon/chart/weight.svg';
+import CardioIcon from '#assets/icon/chart/cardio.svg';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const ExerciseChart = () => {
   const navigate = useNavigate();
 
-  const exerciseData = useSelector(
-    (state: RootState) => state.exercise?.exercise,
-  );
+  const { data: userInfo, isLoading: isUserInfoLoading } =
+    useGetUserInfoQuery();
+
+  const { data: exerciseData, isLoading: isExerciseLoading } =
+    useGetExerciseQuery(
+      {
+        userId: userInfo?.id ?? '',
+        startDate: dayjs().subtract(7, 'day').format('YYYY-MM-DD'),
+        endDate: dayjs().format('YYYY-MM-DD'),
+      },
+      { skip: !userInfo },
+    );
+
+  if (isExerciseLoading) {
+    return <div>loading~</div>;
+  }
+
   let cardio = 0;
   let weight = 0;
-  exerciseData.forEach((ele) =>
+  exerciseData?.forEach((ele) =>
     ele.detail.forEach((detail) => {
       if (detail.type === 'cardio') {
         cardio += parseFloat(detail.duration);
@@ -38,7 +53,6 @@ const ExerciseChart = () => {
         borderColor: ['rgba(255, 99, 132, 1)', 'rgba(255, 206, 86, 1)'],
         borderWidth: 1,
         tension: 0.1,
-        image: [WeightIcon, CardioIcon],
       },
     ],
   };
@@ -51,40 +65,41 @@ const ExerciseChart = () => {
 
   const customPlugin = {
     id: 'customPlugin',
-    afterDatasetDraw(chart) {
+    afterDatasetDraw(chart: ChartJS) {
       const { ctx } = chart;
       const width = 30;
       ctx.save();
 
-      chart.getDatasetMeta(0).data.forEach((datapoint, index) => {
-        const x = datapoint.tooltipPosition().x;
-        const y = datapoint.tooltipPosition().y;
+      (chart.getDatasetMeta(0).data as ArcElement[]).forEach(
+        (datapoint: ArcElement, index: number) => {
+          const { x, y } = datapoint.tooltipPosition(false);
 
-        const image = images[index];
-        ctx.clearRect(x - width / 2, y - width / 2, width, width);
-        ctx.drawImage(image, x - width / 2, y - width / 2, width, width);
-      });
+          const image = images[index];
+
+          ctx.drawImage(image, x - width / 2, y - width / 2, width, width);
+        },
+      );
 
       ctx.restore();
     },
   };
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
-        // position: 'bottom',
       },
     },
   };
 
   return (
     <div
-      className="w-1/3 bg-white rounded-lg border-1 pb-6 pt-2 px-4 flex flex-col justify-between cursor-pointer"
+      className="w-1/3 bg-white rounded-lg border-1 pt-2 px-2 flex flex-col cursor-pointer"
       onClick={() => navigate('/exercise')}
     >
-      <p className="text-sm font-bold">Weight/Cardio</p>
-      <div className="w-full flex justify-center">
+      <p className="text-sm font-bold pl-2">Weight/Cardio</p>
+      <div className="w-full flex justify-center h-full p-2">
         <Doughnut data={data} options={options} plugins={[customPlugin]} />
       </div>
     </div>

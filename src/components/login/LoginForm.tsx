@@ -7,11 +7,15 @@ import Input from '#components/common/Input';
 import ErrorMessage from '#components/common/ErrorMessage';
 
 import { AppDispatch } from '#stores/store';
-import { login } from '#stores/auth/action';
+import { setUser } from '#/stores/user/slice';
+
+import { usePostLoginMutation } from '#/api/authApi';
 
 const LoginForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+
+  const [postLogin] = usePostLoginMutation();
 
   const idRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -24,15 +28,17 @@ const LoginForm = () => {
     if (idRef.current?.value === '' || passwordRef.current?.value === '') {
       setHasError(true);
     } else {
-      const resultAction = await dispatch(
-        login({
+      try {
+        const result = await postLogin({
           id: idRef.current?.value ?? '',
           password: passwordRef.current?.value ?? '',
-        }),
-      );
-      if (login.fulfilled.match(resultAction)) {
+        }).unwrap();
+
+        dispatch(setUser(result));
         navigate('/');
-      } else {
+      } catch (error) {
+        console.error('Error during login:', error);
+
         setHasError(true);
       }
     }

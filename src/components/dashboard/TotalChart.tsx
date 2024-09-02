@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -11,34 +10,33 @@ import {
 } from 'chart.js';
 import dayjs from 'dayjs';
 
-import { AppDispatch, RootState } from '#/stores/store';
-import { getExercise } from '#/stores/exercise/action';
+import { useGetExerciseQuery } from '#/api/exerciseApi';
+import { useGetUserInfoQuery } from '#/api/userApi';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
 const TotalChart = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
 
-  const exerciseData = useSelector(
-    (state: RootState) => state.exercise?.exercise,
-  );
-  const userId = useSelector((state: RootState) => state.user.user?.id);
+  const { data: userInfo } = useGetUserInfoQuery();
+
   const dateRagne = Array.from({ length: 7 }, (_, i) =>
     dayjs().subtract(6, 'day').add(i, 'day').format('YYYY-MM-DD'),
   );
 
-  useEffect(() => {
-    if (userId) {
-      dispatch(
-        getExercise({
-          userId: userId,
-          startDate: dayjs().subtract(7, 'day').format('YYYY-MM-DD'),
-          endDate: dayjs().format('YYYY-MM-DD'),
-        }),
-      );
-    }
-  }, [dispatch, userId]);
+  const { data: exerciseData, isLoading: isExerciseLoading } =
+    useGetExerciseQuery(
+      {
+        userId: userInfo?.id ?? '',
+        startDate: dayjs().subtract(7, 'day').format('YYYY-MM-DD'),
+        endDate: dayjs().format('YYYY-MM-DD'),
+      },
+      { skip: !userInfo },
+    );
+
+  if (isExerciseLoading) {
+    return <div>loading~</div>;
+  }
 
   const data = {
     labels: dateRagne,
@@ -49,7 +47,7 @@ const TotalChart = () => {
             (exercise) => dayjs(exercise.date).format('YYYY-MM-DD') === date,
           );
 
-          if (filter?.length > 0) {
+          if (filter && filter?.length > 0) {
             return filter[0].totalDuration;
           } else {
             return '0';
@@ -57,25 +55,18 @@ const TotalChart = () => {
         }),
         fill: false,
         borderColor: '#98abf9',
-        pointStyle: false,
+        pointStyle: 'line',
       },
     ],
   };
 
   const options = {
     responsive: true,
-    // maintainAspectRatio: false,
+    maintainAspectRatio: true,
     plugins: {
       legend: {
         display: false,
       },
-      // title: {
-      //   display: true,
-      //   text: 'Total workout volume',
-      //   color: 'black',
-      //   align: 'start',
-      //   position: 'top',
-      // },
     },
 
     scales: {

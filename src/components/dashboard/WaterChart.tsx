@@ -37,25 +37,13 @@ const WaterChart = () => {
   };
 
   const options = {
-    indexAxis: 'y',
+    indexAxis: 'y' as const,
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
       },
-      //   title: {
-      //     display: true,
-      //     align: 'start',
-      //     position: 'top',
-      //     text: 'total water volume',
-      //     color: 'black',
-      //     padding: {
-      //       top: 8,
-      //       //   right: 16,
-      //       bottom: 8,
-      //     },
-      //   },
     },
     scales: {
       x: {

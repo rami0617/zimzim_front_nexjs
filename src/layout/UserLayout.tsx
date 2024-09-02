@@ -1,23 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 
 import Menu from '#components/common/menu/Menu';
 import UserHeader from '#components/common/header/UserHeader';
 
-import { getUserInfo } from '#/stores/user/action';
-import { AppDispatch, RootState } from '#/stores/store';
+import { useGetUserInfoQuery } from '#/api/userApi';
 
 const UserLayout = () => {
-  const userId = useSelector((state: RootState) => state.user.user?.id);
-  const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    if (!userId) {
-      dispatch(getUserInfo());
-    }
-  }, [dispatch, userId]);
-
   return (
     <div className="min-h-screen w-screen flex flex-col bg-secondary-light/50">
       <UserHeader />

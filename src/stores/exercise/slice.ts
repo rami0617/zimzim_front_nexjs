@@ -12,10 +12,14 @@ const initialState: ExerciseState = {
 const exerciseSlice = createSlice({
   name: 'exercise',
   initialState,
-  reducers: { resetExercise: () => initialState },
+  reducers: {
+    setExercise(state, action: PayloadAction<Exercise[]>) {
+      state.exercise = action.payload;
+    },
+    resetExercise: () => initialState,
+  },
   extraReducers: (builder) => {
     builder
-
       .addCase(getExercise.pending, (state) => {
         state.status = 'loading';
       })
@@ -34,6 +38,6 @@ const exerciseSlice = createSlice({
   },
 });
 
-export const { resetExercise } = exerciseSlice.actions;
+export const { resetExercise, setExercise } = exerciseSlice.actions;
 
 export default exerciseSlice.reducer;
