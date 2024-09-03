@@ -1,5 +1,5 @@
 import React, { FormEvent, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,21 +8,21 @@ import * as yup from 'yup';
 import Button from '#components/common/Button';
 import Input from '#components/common/Input';
 import SelectBox from '#components/common/SelectBox';
-import Badge from '#components/exercise/Badge';
+import Badge from '#/components/exercise/post/Badge';
 
-import { AppDispatch, RootState } from '#stores/store';
+import { AppDispatch } from '#stores/store';
 
 import DeleteIcon from '#assets/icon/delete.svg?react';
 import { EXERCISE_FORCE_TYPE, EXERCISE_TYPE } from '#/api/type';
 import {
   exerciseApi,
-  useGetExerciseQuery,
   usePostExerciseMutation,
 } from '#/api/services/exerciseApi';
 import { useGetUserInfoQuery } from '#/api/services/userApi';
 import { getKoreaDate } from '#/util';
 
 export type ExercisePostFormInput = {
+  _id?: string | null;
   date: string;
   duration: string;
   type: EXERCISE_TYPE;
@@ -43,6 +43,7 @@ const ExerciseForm = () => {
   const navigate = useNavigate();
 
   const schema: yup.ObjectSchema<ExercisePostFormInput> = yup.object().shape({
+    _id: yup.string().notRequired(),
     date: yup.string().required('날짜를 입력해주세요'),
     isPT: yup.string().required('PT 여부를 선택해주세요.'),
     duration: yup.string().required('운동 시간을 입력해 주세요'),
@@ -123,6 +124,7 @@ const ExerciseForm = () => {
               type: exercise.type,
               duration: exercise.duration,
               force: exercise.forceType,
+              _id: exercise._id ?? '',
             };
           });
 
@@ -144,6 +146,7 @@ const ExerciseForm = () => {
               isPT: exercise.isPT,
               detail: [
                 {
+                  _id: exercise._id ?? '',
                   type: exercise.type,
                   duration: exercise.duration,
                   force: exercise.forceType,

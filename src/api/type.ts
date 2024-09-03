@@ -26,6 +26,7 @@ export interface GetExercisePayload {
 }
 
 export type ExerciseDetail = {
+  _id: string;
   duration: string;
   type: EXERCISE_TYPE;
   force: EXERCISE_FORCE_TYPE;
