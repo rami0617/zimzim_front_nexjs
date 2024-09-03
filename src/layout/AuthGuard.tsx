@@ -1,22 +1,25 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 import { setNavigateFunction } from '#/api/axios';
-
-import { RootState } from '#/stores/store';
+import { useGetUserInfoQuery } from '#/api/services/userApi';
 
 const AuthGuard = () => {
   const navigate = useNavigate();
 
-  const user = useSelector((state: RootState) => state.user);
+  const { data, isLoading, isSuccess } = useGetUserInfoQuery();
 
   useEffect(() => {
     setNavigateFunction(navigate);
   }, [navigate]);
 
+  if (isLoading) {
+    return <div>loading...</div>;
+  }
+
   if (
-    !user &&
+    !data &&
+    isSuccess &&
     location.pathname !== '/login' &&
     location.pathname !== '/sign-up'
   ) {
@@ -24,7 +27,7 @@ const AuthGuard = () => {
   }
 
   return (
-    <div>
+    <div className="container">
       <Outlet />
     </div>
   );
