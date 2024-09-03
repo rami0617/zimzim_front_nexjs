@@ -1,17 +1,16 @@
 import React, { useRef, useState, FormEvent } from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '#components/common/Button';
 import Input from '#components/common/Input';
 import ErrorMessage from '#components/common/ErrorMessage';
 
-import { AppDispatch } from '#stores/store';
-import { login } from '#stores/auth/action';
+import { usePostLoginMutation } from '#/api/services/authApi';
 
 const LoginForm = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+
+  const [postLogin] = usePostLoginMutation();
 
   const idRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -24,15 +23,16 @@ const LoginForm = () => {
     if (idRef.current?.value === '' || passwordRef.current?.value === '') {
       setHasError(true);
     } else {
-      const resultAction = await dispatch(
-        login({
+      try {
+        await postLogin({
           id: idRef.current?.value ?? '',
           password: passwordRef.current?.value ?? '',
-        }),
-      );
-      if (login.fulfilled.match(resultAction)) {
+        }).unwrap();
+
         navigate('/');
-      } else {
+      } catch (error) {
+        console.error('Error during login:', error);
+
         setHasError(true);
       }
     }

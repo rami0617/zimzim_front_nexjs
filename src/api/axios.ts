@@ -4,6 +4,9 @@ let navigateFunction: (path: string) => void;
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 axiosInstance.interceptors.request.use(
@@ -13,7 +16,6 @@ axiosInstance.interceptors.request.use(
     if (!url?.startsWith('/auth/sign-up')) {
       config.withCredentials = true;
     }
-
     return config;
   },
   (error) => {
