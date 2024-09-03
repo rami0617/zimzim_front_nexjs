@@ -57,8 +57,8 @@
 ## 기능
 
 - 로그인, 로그아웃
-  ![화면 기록 2024-08-25 오후 12 37 02](https://github.com/user-attachments/assets/b42db316-fc60-49fc-9191-987e0af24e3b)
 - 회원가입
 - 운동기록 추가, 수정, 삭제
-  ![화면 기록 2024-08-29 오후 1 16 36](https://github.com/user-attachments/assets/d30bca43-00aa-4bf2-9f6d-d8969e736344)
 - 운동기록 차트로 보기
+  ![화면 기록 2024-08-25 오후 12 37 02](https://github.com/user-attachments/assets/b42db316-fc60-49fc-9191-987e0af24e3b)
+  ![화면 기록 2024-09-03 오전 10 04 04](https://github.com/user-attachments/assets/6fe64180-c602-4fe3-9719-de637a151b6b)
