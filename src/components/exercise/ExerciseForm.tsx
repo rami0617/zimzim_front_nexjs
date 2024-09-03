@@ -16,22 +16,27 @@ import DeleteIcon from '#assets/icon/delete.svg?react';
 import { EXERCISE_FORCE_TYPE, EXERCISE_TYPE } from '#/api/type';
 import {
   exerciseApi,
+  useGetExerciseQuery,
   usePostExerciseMutation,
 } from '#/api/services/exerciseApi';
+import { useGetUserInfoQuery } from '#/api/services/userApi';
+import { getKoreaDate } from '#/util';
 
 export type ExercisePostFormInput = {
   date: string;
   duration: string;
   type: EXERCISE_TYPE;
   forceType: EXERCISE_FORCE_TYPE;
-  // isPT: boolean;
+  isPT: string;
 };
 
 const ExerciseForm = () => {
   const [postExercise] = usePostExerciseMutation();
+  const { data: userInfo } = useGetUserInfoQuery();
 
   const [exerciseList, setExerciseList] = useState<ExercisePostFormInput[]>([]);
-  const today = new Date().toISOString().split('T')[0];
+
+  const today = getKoreaDate();
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -39,7 +44,7 @@ const ExerciseForm = () => {
 
   const schema: yup.ObjectSchema<ExercisePostFormInput> = yup.object().shape({
     date: yup.string().required('날짜를 입력해주세요'),
-    // isPT: yup.boolean().required('PT 여부를 선택해주세요.'),
+    isPT: yup.string().required('PT 여부를 선택해주세요.'),
     duration: yup.string().required('운동 시간을 입력해 주세요'),
     type: yup
       .mixed<EXERCISE_TYPE>()
@@ -66,7 +71,7 @@ const ExerciseForm = () => {
     const subscription = watch((value, { name }) => {
       const values = Object.values(value);
       if (
-        values.length === 4 &&
+        values.length === 5 &&
         values.filter((value) => value === undefined || value === '').length ===
           0
       ) {
@@ -124,17 +129,19 @@ const ExerciseForm = () => {
           const array = {
             date: exerciseList[0].date,
             totalDuration: totalDuration.toString(),
-            userId: 'user2',
+            userId: userInfo?.id ?? '',
             detail: detail,
+            isPT: exerciseList[0].isPT,
           };
 
           promises.push(postExercise(array));
         } else {
           const array = exerciseList.map((exercise) => {
             postExercise({
-              userId: 'user2',
+              userId: userInfo?.id ?? '',
               totalDuration: exercise.duration,
               date: exercise.date,
+              isPT: exercise.isPT,
               detail: [
                 {
                   type: exercise.type,
@@ -149,10 +156,11 @@ const ExerciseForm = () => {
         }
 
         Promise.allSettled(promises).then((result) => {
-          alert('등록이 완료 되었습니다');
           dispatch(
             exerciseApi.util.invalidateTags([{ type: 'Exercise', id: 'LIST' }]),
           );
+
+          alert('등록이 완료 되었습니다');
           navigate('/');
         });
       } catch (error) {
@@ -181,19 +189,25 @@ const ExerciseForm = () => {
             />
           )}
         />
-        {/* <Controller
+        <Controller
           name="isPT"
           control={control}
           render={({ field }) => (
-            <div {...field}>
-              <input type="radio" name="isPT" value="Y"></input>
-              <label>PT</label>
-
-              <input type="radio" name="isPT" value="N"></input>
-              <label>개인운동</label>
+            <div {...field} className="flex justify-between gap-1">
+              <label className="text-neutral-500">PT 여부</label>
+              <div className="flex gap-4">
+                <div>
+                  <input type="radio" name="isPT" value="Y"></input>
+                  <label className="pl-2">PT</label>
+                </div>
+                <div>
+                  <input type="radio" name="isPT" value="N"></input>
+                  <label className="pl-2">개인운동</label>
+                </div>
+              </div>
             </div>
           )}
-        /> */}
+        />
         <Controller
           name="type"
           control={control}

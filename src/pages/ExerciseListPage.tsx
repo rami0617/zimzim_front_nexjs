@@ -23,11 +23,8 @@ import { Exercise } from '#/api/type';
 import LeftArrowIcon from '#assets/icon/left-arrow.svg?react';
 import RightArrowIcon from '#assets/icon/right-arrow.svg?react';
 
-type FlattenedExercise = Pick<Exercise, 'date'> &
+type FlattenedExercise = Pick<Exercise, 'date' | 'isPT'> &
   Pick<Exercise['detail'][number], 'type' | 'duration' | 'force'>;
-
-// type CheckedExercise = Pick<Exercise, '_id'> &
-//   Pick<Exercise['detail'][number], 'original'>;
 
 const ExerciseListPage = () => {
   const columnHelper = createColumnHelper<FlattenedExercise>();
@@ -79,9 +76,11 @@ const ExerciseListPage = () => {
       meta: { className: 'w-1/6 text-left' },
     }),
     columnHelper.accessor('isPT', {
-      id: 'count',
-      cell: (info) => '개인운동',
+      id: 'isPT',
       header: () => 'PT 여부',
+      cell: (info) => (
+        <span>{info.getValue() === 'Y' ? 'PT' : '개인운동'}</span>
+      ),
       meta: { className: 'w-1/6 text-right' },
     }),
     columnHelper.accessor('type', {
@@ -143,6 +142,7 @@ const ExerciseListPage = () => {
             type: order.type,
             force: order.force,
             duration: order.duration,
+            isPT: ele.isPT,
           })),
         ),
       );
@@ -222,33 +222,46 @@ const ExerciseListPage = () => {
             ))}
           </thead>
           <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="py-2">
-                {row.getVisibleCells().map((cell) => (
-                  <td
-                    key={cell.id}
-                    className={twMerge(
-                      'text-center',
-                      cell.column.columnDef.meta?.className,
-                      'py-2',
-                    )}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
+            {table.getRowModel().rows.length > 0 ? (
+              table.getRowModel().rows.map((row) => (
+                <tr key={row.id} className="py-2">
+                  {row.getVisibleCells().map((cell) => (
+                    <td
+                      key={cell.id}
+                      className={twMerge(
+                        'text-center',
+                        cell.column.columnDef.meta?.className,
+                        'py-2',
+                      )}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={columns.length} className="text-center py-2 h-16">
+                  등록된 운동 기록이 없습니다
+                </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </ContentBox>
       <div className="h-6 flex flex-row justify-end gap-2 items-center w-4/5">
-        <Button
-          className="bg-white h-6 flex items-center justify-center w-6 rounded-md cursor-pointer"
-          onClick={() => setPage((prev) => prev - 1)}
-          disabled={page === 1 || !exerciseData}
-        >
-          <LeftArrowIcon />
-        </Button>
+        {exerciseData?.currentPage > 0 && (
+          <Button
+            className="bg-white h-6 flex items-center justify-center w-6 rounded-md cursor-pointer"
+            onClick={() => setPage((prev) => prev - 1)}
+            disabled={page === 1 || !exerciseData}
+          >
+            <LeftArrowIcon />
+          </Button>
+        )}
         {Array.from({ length: exerciseData?.totalPages ?? 0 }, (_, i) => (
           <p
             key={i + 1}
@@ -260,13 +273,15 @@ const ExerciseListPage = () => {
             {i + 1}
           </p>
         ))}
-        <Button
-          className="bg-white h-6 flex items-center justify-center w-6 rounded-md cursor-pointer"
-          onClick={() => setPage((prev) => prev + 1)}
-          disabled={page >= (exerciseData?.totalPages ?? 1)}
-        >
-          <RightArrowIcon />
-        </Button>
+        {exerciseData?.currentPage > 0 && (
+          <Button
+            className="bg-white h-6 flex items-center justify-center w-6 rounded-md cursor-pointer"
+            onClick={() => setPage((prev) => prev + 1)}
+            disabled={page >= (exerciseData?.totalPages ?? 1)}
+          >
+            <RightArrowIcon />
+          </Button>
+        )}
       </div>
     </div>
   );

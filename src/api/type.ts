@@ -35,6 +35,7 @@ export interface PostExercisePayload {
   userId: string;
   date: string;
   totalDuration: string;
+  isPT: string;
   detail: ExerciseDetail[];
 }
 
@@ -42,6 +43,7 @@ export interface Exercise {
   _id: string;
   date: string;
   totalDuration: string;
+  isPT: string;
   detail: ExerciseDetail[];
 }
 
