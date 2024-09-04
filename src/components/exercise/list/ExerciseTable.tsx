@@ -89,7 +89,7 @@ const ExerciseTable = ({
                   onClick={() =>
                     navigate(`/exercise/detail/${row.original._id}`)
                   }
-                  className="cursor-pointer"
+                  className="cursor-pointer hover:bg-secondary-light/20"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <td

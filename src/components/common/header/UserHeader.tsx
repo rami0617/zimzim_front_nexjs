@@ -1,19 +1,26 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
 import Button from '#components/common/Button';
 
 import UserIcon from '#assets/icon/user.svg?react';
 import LogoutIcon from '#assets/icon/logout.svg?react';
 import CIIcon from '#assets/icon/icon.svg?react';
+import { authApi, usePostLogoutMutation } from '#/api/services/authApi';
 
 const UserHeader = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [logout] = usePostLogoutMutation();
 
-  const handleLogout = () => {
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      await logout().unwrap();
+      authApi.util.invalidateTags([{ type: 'User', id: 'User' }]);
+
+      navigate('/login');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

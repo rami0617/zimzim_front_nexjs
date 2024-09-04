@@ -7,15 +7,13 @@ import { useGetUserInfoQuery } from '#/api/services/userApi';
 const AuthGuard = () => {
   const navigate = useNavigate();
 
-  const { data, isLoading, isSuccess } = useGetUserInfoQuery();
+  const { data, isSuccess } = useGetUserInfoQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
 
   useEffect(() => {
     setNavigateFunction(navigate);
   }, [navigate]);
-
-  if (isLoading) {
-    return <div>loading...</div>;
-  }
 
   if (
     !data &&

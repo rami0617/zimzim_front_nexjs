@@ -86,7 +86,10 @@ const ExercisePostPage = () => {
         await Promise.allSettled(promises);
 
         dispatch(
-          exerciseApi.util.invalidateTags([{ type: 'Exercise', id: 'LIST' }]),
+          exerciseApi.util.invalidateTags([
+            { type: 'Exercise', id: 'LIST' },
+            { type: 'Exercise', id: 'Exercise' },
+          ]),
         );
         alert('등록이 완료되었습니다');
         navigate('/');
