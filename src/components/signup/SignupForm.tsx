@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,11 +7,10 @@ import * as yup from 'yup';
 import Button from '#components/common/Button';
 import Input from '#components/common/Input';
 
-import { AppDispatch } from '#stores/store';
+import { usePostSignupMutation } from '#/api/services/authApi';
 
 import EyeSlashIcon from '#assets/icon/eye-slash-regular.svg?react';
 import EyeIcon from '#assets/icon/eye-regular.svg?react';
-import { usePostSignupMutation } from '#/api/services/authApi';
 
 export type SingnUpFormInput = {
   id: string;
@@ -28,7 +26,6 @@ const SignupForm = () => {
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
 
-  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   const schema = yup
@@ -91,7 +88,7 @@ const SignupForm = () => {
 
   return (
     <form className="flex flex-col gap-12" onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4">
         <Input
           label="ID"
           placeholder="Enter your ID"
