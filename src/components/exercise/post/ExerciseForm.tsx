@@ -68,12 +68,6 @@ const ExerciseForm = ({
   });
 
   useEffect(() => {
-    if (defaultValues) {
-      reset(defaultValues);
-    }
-  }, [defaultValues, reset]);
-
-  useEffect(() => {
     const subscription = watch((value, { name }) => {
       const values = Object.values(value);
 
@@ -81,7 +75,7 @@ const ExerciseForm = ({
         (value) => value !== undefined && value !== '',
       );
 
-      if (isUseBadge && hasAllValue) {
+      if (isUseBadge && hasAllValue && values.length === 5) {
         const newExerciseList = [
           ...exerciseList,
           value,
@@ -91,21 +85,21 @@ const ExerciseForm = ({
           alert('최대 2개까지 기록 가능합니다.');
         } else {
           setExerciseList([...newExerciseList]);
-          reset({
-            date: undefined,
-            duration: '',
-            isPT: 'Y',
-            type: undefined,
-            force: undefined,
-          });
+          // reset({
+          //   date: defaultValues?.date,
+          //   duration: '',
+          //   isPT: 'Y',
+          //   type: undefined,
+          //   force: undefined,
+          // });
+          trigger();
         }
       }
-
       trigger(name);
     });
 
     return () => subscription.unsubscribe();
-  }, [watch, trigger]);
+  }, [watch, trigger, reset, exerciseList]);
 
   const onSubmit = (data: ExercisePostFormInput) =>
     submitFunction(
@@ -180,7 +174,7 @@ const ExerciseForm = ({
           placeholder="0분"
           inputClassName="w-[220px]"
           error={errors?.duration}
-          min={0}
+          min={1}
           max={60}
         />
         <ControllerSelectBox
@@ -201,7 +195,6 @@ const ExerciseForm = ({
       </div>
       <div className="flex flex-row gap-2 h-6">
         {isUseBadge &&
-          exerciseList.length > 0 &&
           exerciseList.map((exercise: ExercisePostFormInput) => {
             const newExercise = Object.entries(exercise).map((element) =>
               element[0] === 'duration'

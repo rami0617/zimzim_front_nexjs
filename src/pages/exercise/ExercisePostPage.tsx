@@ -36,7 +36,6 @@ const ExercisePostPage = () => {
     isPT: exercise.isPT,
     detail: [
       {
-        _id: exercise._id ?? '',
         type: exercise.type as EXERCISE_TYPE,
         duration: exercise.duration,
         force: exercise.force as EXERCISE_FORCE_TYPE,
@@ -53,7 +52,6 @@ const ExercisePostPage = () => {
       type: exercise.type as EXERCISE_TYPE,
       duration: exercise.duration,
       force: exercise.force as EXERCISE_FORCE_TYPE,
-      _id: exercise._id ?? '',
     }));
 
     return {

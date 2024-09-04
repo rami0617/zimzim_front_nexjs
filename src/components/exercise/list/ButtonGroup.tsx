@@ -44,7 +44,7 @@ const ButtonGroup = ({ checkedExercise, page }: ButtonGroupProps) => {
       const exercise = temp.find((exercise) => exercise?._id === exerciseId);
 
       const detailIds = exercise?.detail
-        .filter((detail) => checkedExercise.includes(detail._id))
+        .filter((detail) => checkedExercise.includes(detail._id as string))
         .map((detail) => detail._id);
 
       return {
