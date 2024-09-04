@@ -29,7 +29,7 @@ interface SelectBoxProps {
   onChange?: (event: ChangeEvent<HTMLSelectElement>) => void;
   errorMessage?: string;
   placeHolder: string;
-  value: string;
+  value?: string;
 }
 
 const SelectBox = forwardRef<HTMLSelectElement, SelectBoxProps>(

@@ -27,6 +27,7 @@ const DashboardPage = () => {
       },
       {
         skip: !userInfo?.id,
+        refetchOnMountOrArgChange: true,
       },
     );
 

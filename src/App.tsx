@@ -1,27 +1,25 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-} from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import { store } from '#stores/store';
 
-import DashboardPage from '#pages/DashboardPage';
-import ExercisePage from '#pages/ExercisePage';
-import ExerciseListPage from '#/pages/ExerciseListPage';
-import ExercisePost from '#pages/ExercisePost';
-import WaterPage from '#pages/WaterPage';
-import LoginPage from '#pages/LoginPage';
-import SignUpPage from '#pages/SignUpPage';
+import DashboardPage from '#/pages/dashboard/DashboardPage';
+import ExercisePage from '#pages/exercise/ExercisePage';
+import ExerciseListPage from '#/pages/exercise/ExerciseListPage';
+import ExercisePostPage from '#/pages/exercise/ExercisePostPage';
+import ExerciseDetailPage from './pages/exercise/ExerciseDetailPage';
+import WaterPage from '#/pages/water/WaterPage';
+import LoginPage from '#/pages/login/LoginPage';
+import SignUpPage from '#/pages/signup/SignUpPage';
 import NotFoundPage from '#pages/NotFoundPage';
 
 import AuthGuard from '#layout/AuthGuard';
 import UserLayout from '#layout/UserLayout';
 import CommonLayout from '#layout/CommonLayout';
+import ExerciseUpdatePage from './pages/exercise/ExerciseUpdatePage';
 
 const queryClient = new QueryClient();
 
@@ -37,7 +35,9 @@ const App = () => {
                 <Route path="/" element={<DashboardPage />} />
                 <Route path="/exercise" element={<ExercisePage />}>
                   <Route path="" element={<ExerciseListPage />} />
-                  <Route path="post" element={<ExercisePost />} />
+                  <Route path="post" element={<ExercisePostPage />} />
+                  <Route path="detail/:id" element={<ExerciseDetailPage />} />
+                  <Route path="update/:id" element={<ExerciseUpdatePage />} />
                 </Route>
                 <Route path="/water" element={<WaterPage />} />
               </Route>

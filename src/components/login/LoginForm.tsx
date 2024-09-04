@@ -2,7 +2,7 @@ import React, { useRef, useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '#components/common/Button';
-import Input from '#components/common/Input';
+import Input from '#/components/common/input/Input';
 import ErrorMessage from '#components/common/ErrorMessage';
 
 import { usePostLoginMutation } from '#/api/services/authApi';

@@ -36,7 +36,9 @@ export const useGetExerciseColumns = (
               const checked = e.target.checked;
 
               if (checked) {
-                setCheckedExercise(flattenedData.flatMap((row) => row._id));
+                setCheckedExercise(
+                  flattenedData.flatMap((row) => row._id as string),
+                );
               } else {
                 setCheckedExercise([]);
               }
