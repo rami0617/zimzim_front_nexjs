@@ -17,6 +17,7 @@ import { useGetExerciseColumns } from '#/hooks/useExerciseColumns';
 
 import LeftArrowIcon from '#assets/icon/left-arrow.svg?react';
 import RightArrowIcon from '#assets/icon/right-arrow.svg?react';
+import { useNavigate } from 'react-router-dom';
 
 interface ExerciseTableProps {
   checkedExercise: string[];
@@ -35,6 +36,8 @@ const ExerciseTable = ({
   page,
   setPage,
 }: ExerciseTableProps) => {
+  const navigate = useNavigate();
+
   const columnHelper = createColumnHelper<FlattenedExercise>();
 
   const { exerciseData, flattenedData } = useExerciseData(page);
@@ -54,10 +57,10 @@ const ExerciseTable = ({
   });
 
   return (
-    <div className="w-4/5">
+    <div className="w-full">
       <ContentBox className="rounded-2xl w-full py-4">
-        <table className="table-auto w-full">
-          <thead className="border-b-1 w-full">
+        <table className="table-auto">
+          <thead className="border-b-1">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
@@ -81,7 +84,13 @@ const ExerciseTable = ({
           <tbody>
             {table.getRowModel().rows.length > 0 ? (
               table.getRowModel().rows.map((row) => (
-                <tr key={row.id}>
+                <tr
+                  key={row.id}
+                  onClick={() =>
+                    navigate(`/exercise/detail/${row.original._id}`)
+                  }
+                  className="cursor-pointer"
+                >
                   {row.getVisibleCells().map((cell) => (
                     <td
                       key={cell.id}

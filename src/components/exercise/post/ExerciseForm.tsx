@@ -1,46 +1,44 @@
-import React, { FormEvent, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { twMerge } from 'tailwind-merge';
 
 import Button from '#components/common/Button';
-import Input from '#components/common/Input';
-import SelectBox from '#components/common/SelectBox';
 import Badge from '#/components/exercise/post/Badge';
+import ControllerInput from '#/components/common/input/ControllerInput';
+import RadioInput from '#/components/common/input/RadioInput';
+import ControllerSelectBox from '#/components/common/SelectBox/ControllerSelectBox';
 
-import { AppDispatch } from '#stores/store';
+import { EXERCISE_FORCE_TYPE, EXERCISE_TYPE } from '#/api/type';
 
 import DeleteIcon from '#assets/icon/delete.svg?react';
-import { EXERCISE_FORCE_TYPE, EXERCISE_TYPE } from '#/api/type';
-import {
-  exerciseApi,
-  usePostExerciseMutation,
-} from '#/api/services/exerciseApi';
-import { useGetUserInfoQuery } from '#/api/services/userApi';
-import { getKoreaDate } from '#/util';
 
 export type ExercisePostFormInput = {
   _id?: string | null;
   date: string;
   duration: string;
-  type: EXERCISE_TYPE;
-  forceType: EXERCISE_FORCE_TYPE;
+  type?: EXERCISE_TYPE;
+  force?: EXERCISE_FORCE_TYPE;
   isPT: string;
 };
 
-const ExerciseForm = () => {
-  const [postExercise] = usePostExerciseMutation();
-  const { data: userInfo } = useGetUserInfoQuery();
+interface ExerciseFormProps {
+  submitButtonTitle: string;
+  defaultValues?: ExercisePostFormInput;
+  isUseBadge: boolean;
+  submitFunction: (
+    exerciseList: ExercisePostFormInput | ExercisePostFormInput[],
+  ) => void;
+}
 
+const ExerciseForm = ({
+  submitButtonTitle,
+  defaultValues,
+  isUseBadge,
+  submitFunction,
+}: ExerciseFormProps) => {
   const [exerciseList, setExerciseList] = useState<ExercisePostFormInput[]>([]);
-
-  const today = getKoreaDate();
-
-  const dispatch = useDispatch<AppDispatch>();
-
-  const navigate = useNavigate();
 
   const schema: yup.ObjectSchema<ExercisePostFormInput> = yup.object().shape({
     _id: yup.string().notRequired(),
@@ -51,7 +49,7 @@ const ExerciseForm = () => {
       .mixed<EXERCISE_TYPE>()
       .oneOf(Object.values(EXERCISE_TYPE))
       .required('운동 종류를 입력해주세요'),
-    forceType: yup
+    force: yup
       .mixed<EXERCISE_FORCE_TYPE>()
       .oneOf(Object.values(EXERCISE_FORCE_TYPE))
       .required('운동 강도를 입력해주세요'),
@@ -62,20 +60,28 @@ const ExerciseForm = () => {
     trigger,
     reset,
     control,
+    handleSubmit,
     formState: { errors },
   } = useForm<ExercisePostFormInput>({
     resolver: yupResolver(schema),
-    defaultValues: { date: today },
+    defaultValues,
   });
+
+  useEffect(() => {
+    if (defaultValues) {
+      reset(defaultValues);
+    }
+  }, [defaultValues, reset]);
 
   useEffect(() => {
     const subscription = watch((value, { name }) => {
       const values = Object.values(value);
-      if (
-        values.length === 5 &&
-        values.filter((value) => value === undefined || value === '').length ===
-          0
-      ) {
+
+      const hasAllValue = values.every(
+        (value) => value !== undefined && value !== '',
+      );
+
+      if (isUseBadge && hasAllValue) {
         const newExerciseList = [
           ...exerciseList,
           value,
@@ -86,12 +92,12 @@ const ExerciseForm = () => {
         } else {
           setExerciseList([...newExerciseList]);
           reset({
-            date: today,
+            date: undefined,
             duration: '',
+            isPT: 'Y',
             type: undefined,
-            forceType: undefined,
+            force: undefined,
           });
-          trigger();
         }
       }
 
@@ -99,98 +105,32 @@ const ExerciseForm = () => {
     });
 
     return () => subscription.unsubscribe();
-  }, [watch, trigger, exerciseList, reset, today]);
+  }, [watch, trigger]);
 
-  const onSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-
-    if (exerciseList.length > 0) {
-      try {
-        const promises = [];
-        let isSameDate = false;
-
-        if (exerciseList.length > 1) {
-          isSameDate = exerciseList[0].date === exerciseList[1].date;
-        }
-
-        if (isSameDate) {
-          let totalDuration = exerciseList.reduce(
-            (acc, cur) => acc + Number(cur.duration),
-            0,
-          );
-
-          const detail = exerciseList.map((exercise) => {
-            return {
-              type: exercise.type,
-              duration: exercise.duration,
-              force: exercise.forceType,
-              _id: exercise._id ?? '',
-            };
-          });
-
-          const array = {
-            date: exerciseList[0].date,
-            totalDuration: totalDuration.toString(),
-            userId: userInfo?.id ?? '',
-            detail: detail,
-            isPT: exerciseList[0].isPT,
-          };
-
-          promises.push(postExercise(array));
-        } else {
-          const array = exerciseList.map((exercise) => {
-            postExercise({
-              userId: userInfo?.id ?? '',
-              totalDuration: exercise.duration,
-              date: exercise.date,
-              isPT: exercise.isPT,
-              detail: [
-                {
-                  _id: exercise._id ?? '',
-                  type: exercise.type,
-                  duration: exercise.duration,
-                  force: exercise.forceType,
-                },
-              ],
-            });
-          });
-
-          promises.push(...array);
-        }
-
-        Promise.allSettled(promises).then((result) => {
-          dispatch(
-            exerciseApi.util.invalidateTags([{ type: 'Exercise', id: 'LIST' }]),
-          );
-
-          alert('등록이 완료 되었습니다');
-          navigate('/');
-        });
-      } catch (error) {
-        console.log(error, 'error');
-      }
-    }
-  };
+  const onSubmit = (data: ExercisePostFormInput) =>
+    submitFunction(
+      isUseBadge ? (exerciseList as ExercisePostFormInput[]) : data,
+    );
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-6">
+    <form
+      onSubmit={handleSubmit((data: ExercisePostFormInput) => onSubmit(data))}
+      className="flex flex-col gap-6"
+    >
       <div className="flex flex-col gap-10">
-        <Controller
+        <ControllerInput
           name="date"
           control={control}
-          defaultValue={today}
-          render={({ field }) => (
-            <Input
-              {...field}
-              label="운동 날짜"
-              type="date"
-              placeholder="2024/00/00"
-              className="flex-row items-center"
-              inputClassName="w-[220px]"
-              max={today}
-              errorMessage={errors.date?.message}
-            />
+          defaultValue={defaultValues?.date ?? ''}
+          label="운동 날짜"
+          type="date"
+          placeholder="2024/00/00"
+          inputClassName={twMerge(
+            `w-[220px] ${!isUseBadge && 'cursor-not-allowed'}`,
           )}
+          max={defaultValues?.date}
+          disabled={!isUseBadge}
+          error={errors?.date}
         />
         <Controller
           name="isPT"
@@ -199,111 +139,101 @@ const ExerciseForm = () => {
             <div {...field} className="flex justify-between gap-1">
               <label className="text-neutral-500">PT 여부</label>
               <div className="flex gap-4">
-                <div>
-                  <input type="radio" name="isPT" value="Y"></input>
-                  <label className="pl-2">PT</label>
-                </div>
-                <div>
-                  <input type="radio" name="isPT" value="N"></input>
-                  <label className="pl-2">개인운동</label>
-                </div>
+                <RadioInput
+                  label="PT"
+                  name="isPT"
+                  value="Y"
+                  checked={field.value === 'Y'}
+                  onChange={field.onChange}
+                />
+                <RadioInput
+                  label="개인운동"
+                  name="isPT"
+                  value="N"
+                  checked={field.value === 'N'}
+                  onChange={field.onChange}
+                />
               </div>
             </div>
           )}
         />
-        <Controller
+        <ControllerSelectBox
           name="type"
           control={control}
-          render={({ field }) => (
-            <SelectBox
-              {...field}
-              label="운동 종류"
-              options={[
-                { value: EXERCISE_TYPE.WEIGHT, name: 'weight' },
-                { value: EXERCISE_TYPE.CARDIO, name: 'cardio' },
-              ]}
-              selectId="type"
-              selectName="type"
-              className="flex-row items-center"
-              selectClassName="w-[220px]"
-              placeHolder="종류를 선택해 주세요"
-              errorMessage={errors.type?.message}
-            />
-          )}
+          label="운동 종류"
+          options={[
+            { value: EXERCISE_TYPE.WEIGHT, name: 'weight' },
+            { value: EXERCISE_TYPE.CARDIO, name: 'cardio' },
+          ]}
+          selectId="type"
+          selectName="type"
+          placeHolder="종류를 선택해 주세요"
+          error={errors?.type}
+          selectClassName="w-[220px]"
         />
-        <Controller
+        <ControllerInput
           name="duration"
           control={control}
           defaultValue=""
-          render={({ field }) => (
-            <Input
-              {...field}
-              label="운동 시간"
-              type="number"
-              placeholder="0분"
-              className="flex-row items-center"
-              inputClassName="w-[220px]"
-              errorMessage={errors.duration?.message}
-              min={0}
-              max={60}
-            />
-          )}
+          label="운동 시간"
+          type="number"
+          placeholder="0분"
+          inputClassName="w-[220px]"
+          error={errors?.duration}
+          min={0}
+          max={60}
         />
-        <Controller
-          name="forceType"
+        <ControllerSelectBox
+          name="force"
           control={control}
-          render={({ field }) => (
-            <SelectBox
-              {...field}
-              label="운동 강도"
-              options={[
-                { value: EXERCISE_FORCE_TYPE.EASY, name: 'easy' },
-                { value: EXERCISE_FORCE_TYPE.MEDIUM, name: 'medium' },
-                { value: EXERCISE_FORCE_TYPE.HARD, name: 'hard' },
-              ]}
-              selectId="forceType"
-              selectName="forceType"
-              className="flex-row items-center"
-              selectClassName="w-[220px]"
-              placeHolder="강도를 선택해 주세요"
-              errorMessage={errors.forceType?.message}
-            />
-          )}
+          label="운동 강도"
+          options={[
+            { value: EXERCISE_FORCE_TYPE.EASY, name: 'easy' },
+            { value: EXERCISE_FORCE_TYPE.MEDIUM, name: 'medium' },
+            { value: EXERCISE_FORCE_TYPE.HARD, name: 'hard' },
+          ]}
+          selectId="force"
+          selectName="force"
+          selectClassName="w-[220px]"
+          placeHolder="강도를 선택해 주세요"
+          error={errors?.force}
         />
       </div>
       <div className="flex flex-row gap-2 h-6">
-        {exerciseList.map((exercise: ExercisePostFormInput) => {
-          const newExercise = Object.entries(exercise).map((element) =>
-            element[0] === 'duration'
-              ? (element = [element[0], element[1] + '분'])
-              : element,
-          );
-          const content = newExercise.reduce(
-            (acc, cur) => acc + ' ' + cur[1],
-            '',
-          );
-          return (
-            <Badge content={content} key={content}>
-              <Button
-                className="p-1"
-                onClick={() => {
-                  setExerciseList((prev: ExercisePostFormInput[]) =>
-                    prev.filter((element) => element !== exercise),
-                  );
-                }}
-              >
-                <DeleteIcon width={8} height={10} />
-              </Button>
-            </Badge>
-          );
-        })}
+        {isUseBadge &&
+          exerciseList.length > 0 &&
+          exerciseList.map((exercise: ExercisePostFormInput) => {
+            const newExercise = Object.entries(exercise).map((element) =>
+              element[0] === 'duration'
+                ? (element = [element[0], element[1] + '분'])
+                : element,
+            );
+            const content = newExercise?.reduce(
+              (acc, cur) => acc + ' ' + cur[1],
+              '',
+            );
+            return (
+              <Badge content={content} key={content}>
+                <Button
+                  className="p-1"
+                  onClick={() => {
+                    setExerciseList((prev: ExercisePostFormInput[]) =>
+                      prev.filter((element) => element !== exercise),
+                    );
+                  }}
+                >
+                  <DeleteIcon width={8} height={10} />
+                </Button>
+              </Badge>
+            );
+          })}
       </div>
 
       <Button
         type="submit"
         className="bg-primary h-12 w-full rounded-lg text-white font-bold text-xl border-1 border-gray-light"
       >
-        등록
+        {submitButtonTitle}
       </Button>
     </form>
   );

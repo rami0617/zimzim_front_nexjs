@@ -42,10 +42,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     const isControlled = value !== undefined;
 
     useEffect(() => {
-      if (isControlled && value !== undefined) {
+      if (isControlled) {
         setInternalValue(value);
       }
-    }, [value, isControlled]);
+    }, [value]);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
       if (!isControlled) {

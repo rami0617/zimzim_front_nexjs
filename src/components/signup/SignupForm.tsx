@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import Button from '#components/common/Button';
-import Input from '#components/common/Input';
+import Input from '#/components/common/input/Input';
 
 import { usePostSignupMutation } from '#/api/services/authApi';
 
