@@ -1,5 +1,3 @@
-import { AxiosResponse } from 'axios';
-
 import { SingnUpFormInput } from '#/components/signup/SignupForm';
 
 import { LoginPayload, User } from '#api/type';
@@ -21,7 +19,17 @@ export const authApi = baseApi.injectEndpoints({
         data: userInfo,
       }),
     }),
+    postLogout: build.mutation<void, void>({
+      query: () => ({
+        url: '/auth/logout',
+        method: 'POST',
+      }),
+    }),
   }),
 });
 
-export const { usePostLoginMutation, usePostSignupMutation } = authApi;
+export const {
+  usePostLoginMutation,
+  usePostSignupMutation,
+  usePostLogoutMutation,
+} = authApi;

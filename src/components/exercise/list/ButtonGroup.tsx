@@ -44,7 +44,7 @@ const ButtonGroup = ({ checkedExercise, page }: ButtonGroupProps) => {
       const exercise = temp.find((exercise) => exercise?._id === exerciseId);
 
       const detailIds = exercise?.detail
-        .filter((detail) => checkedExercise.includes(detail._id))
+        .filter((detail) => checkedExercise.includes(detail._id as string))
         .map((detail) => detail._id);
 
       return {
@@ -60,7 +60,7 @@ const ButtonGroup = ({ checkedExercise, page }: ButtonGroupProps) => {
   };
 
   return (
-    <div className="flex flex-row justify-end w-4/5 pb-2 gap-4">
+    <div className="flex flex-row justify-end gap-4">
       <Button
         className={twMerge(
           `bg-red-500 w-[120px] h-12 rounded-lg text-white font-bold text-md border-1 border-gray-light

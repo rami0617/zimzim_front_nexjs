@@ -30,14 +30,14 @@ const useExerciseData = (page: number) => {
   useEffect(() => {
     if (exerciseData?.items) {
       setFlattenData(
-        exerciseData?.items.flatMap((ele) =>
-          ele.detail.map((order) => ({
-            _id: order._id,
-            date: ele.date,
-            type: order.type,
-            force: order.force,
-            duration: order.duration,
-            isPT: ele.isPT,
+        exerciseData?.items.flatMap((exercise) =>
+          exercise.detail.map((element) => ({
+            _id: element._id,
+            date: exercise.date,
+            type: element.type,
+            force: element.force,
+            duration: element.duration,
+            isPT: exercise.isPT,
           })),
         ),
       );

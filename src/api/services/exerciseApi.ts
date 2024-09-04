@@ -1,6 +1,7 @@
 import { AxiosResponse } from 'axios';
 
 import { baseApi } from '#api/baseApi';
+
 import { Exercise, GetExercisePayload, PostExercisePayload } from '#api/type';
 
 export const exerciseApi = baseApi.injectEndpoints({
@@ -46,12 +47,28 @@ export const exerciseApi = baseApi.injectEndpoints({
             }))
           : [{ type: 'Exercise', id: 'LIST' }],
     }),
+    getExerciseDetail: build.query({
+      query: (id: string) => ({
+        url: `/exercise/detail/${id}`,
+        method: 'GET',
+      }),
+      providesTags: (result, error, arg) => [
+        { type: 'Exercise', id: 'DETAIL' },
+      ],
+    }),
     postExercise: build.mutation<
       Pick<AxiosResponse, 'data'>,
       PostExercisePayload
     >({
       query: (payload) => ({
         url: '/exercise',
+        method: 'POST',
+        data: payload,
+      }),
+    }),
+    updateExercise: build.mutation({
+      query: ({ id, payload }) => ({
+        url: `/exercise/detail/${id}`,
         method: 'POST',
         data: payload,
       }),
@@ -74,6 +91,8 @@ export const exerciseApi = baseApi.injectEndpoints({
 export const {
   useGetExerciseQuery,
   useGetExerciseListQuery,
+  useGetExerciseDetailQuery,
   usePostExerciseMutation,
+  useUpdateExerciseMutation,
   useDeleteExerciseDetailMutation,
 } = exerciseApi;

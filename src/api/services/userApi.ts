@@ -8,7 +8,7 @@ export const userApi = baseApi.injectEndpoints({
         url: '/user/info',
         method: 'GET',
       }),
-      providesTags: (result, error, arg) => [{ type: 'User' }],
+      providesTags: (result, error, arg) => [{ type: 'User', id: 'User' }],
     }),
   }),
 });
