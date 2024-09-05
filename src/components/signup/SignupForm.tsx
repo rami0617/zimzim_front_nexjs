@@ -12,7 +12,7 @@ import { usePostSignupMutation } from '#/api/services/authApi';
 import EyeSlashIcon from '#assets/icon/eye-slash-regular.svg?react';
 import EyeIcon from '#assets/icon/eye-regular.svg?react';
 
-export type SingnUpFormInput = {
+export type SignUpFormInput = {
   id: string;
   nickname: string;
   password: string;
@@ -57,7 +57,7 @@ const SignupForm = () => {
     watch,
     trigger,
     formState: { errors },
-  } = useForm<SingnUpFormInput>({
+  } = useForm<SignUpFormInput>({
     resolver: yupResolver(schema),
   });
 
@@ -72,7 +72,7 @@ const SignupForm = () => {
     return () => subscription.unsubscribe();
   }, [watch, trigger]);
 
-  const onSubmit = async (data: SingnUpFormInput) => {
+  const onSubmit = async (data: SignUpFormInput) => {
     try {
       await postSignup(data);
 
