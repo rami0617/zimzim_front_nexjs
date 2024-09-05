@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
@@ -7,8 +7,12 @@ import dayjs from 'dayjs';
 import { useGetUserInfoQuery } from '#/api/services/userApi';
 import { useGetExerciseQuery } from '#/api/services/exerciseApi';
 
+import ROUTE from '#/constants/route';
+import FORMAT from '#/constants/format';
+
 import WeightIcon from '#assets/icon/chart/weight.svg';
 import CardioIcon from '#assets/icon/chart/cardio.svg';
+import { EXERCISE_TYPE } from '#/api/types';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -21,8 +25,8 @@ const ExerciseChart = () => {
     useGetExerciseQuery(
       {
         userId: userInfo?.id ?? '',
-        startDate: dayjs().subtract(7, 'day').format('YYYY-MM-DD'),
-        endDate: dayjs().format('YYYY-MM-DD'),
+        startDate: dayjs().subtract(7, 'day').format(FORMAT.DATE),
+        endDate: dayjs().format(FORMAT.DATE),
       },
       { skip: !userInfo },
     );
@@ -31,23 +35,28 @@ const ExerciseChart = () => {
     return <div>loading~</div>;
   }
 
-  // if (!exerciseData?.length) {
-  //   return <div>데이터가 없습니다</div>;
-  // }
+  const { weight, cardio } = useMemo(() => {
+    let cardio = 0;
+    let weight = 0;
 
-  let cardio = 0;
-  let weight = 0;
-  exerciseData?.forEach((ele) =>
-    ele.detail.forEach((detail) => {
-      if (detail.type === 'cardio') {
-        cardio += parseFloat(detail.duration);
-      } else {
-        weight += parseFloat(detail.duration);
-      }
-    }),
-  );
+    exerciseData?.forEach((ele) =>
+      ele.detail.forEach((detail) => {
+        if (detail.type === EXERCISE_TYPE.CARDIO) {
+          cardio += parseFloat(detail.duration);
+        } else {
+          weight += parseFloat(detail.duration);
+        }
+      }),
+    );
+
+    return {
+      weight,
+      cardio,
+    };
+  }, [exerciseData]);
+
   const data = {
-    labels: ['weight', 'cardio'],
+    labels: [EXERCISE_TYPE.WEIGHT, EXERCISE_TYPE.CARDIO],
     datasets: [
       {
         data: [weight, cardio],
@@ -60,11 +69,15 @@ const ExerciseChart = () => {
     ],
   };
 
-  const images = [WeightIcon, CardioIcon].map((src) => {
-    const img = new Image();
-    img.src = src;
-    return img;
-  });
+  const images = useMemo(
+    () =>
+      [weight ? WeightIcon : '', cardio ? CardioIcon : ''].map((src) => {
+        const img = new Image();
+        img.src = src;
+        return img;
+      }),
+    [weight, cardio],
+  );
 
   const customPlugin = {
     id: 'customPlugin',
@@ -99,7 +112,7 @@ const ExerciseChart = () => {
   return (
     <div
       className="w-1/3 bg-white rounded-lg border-1 pt-2 px-2 flex flex-col cursor-pointer h-full"
-      onClick={() => navigate('/exercise')}
+      onClick={() => navigate(ROUTE.EXERCISE.LIST)}
     >
       <p className="text-sm font-bold pl-2">Weight/Cardio</p>
       <div className="w-full flex justify-center h-full p-2 items-center">

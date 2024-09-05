@@ -11,6 +11,8 @@ import Button from '#/components/common/Button';
 import { useGetUserInfoQuery } from '#/api/services/userApi';
 import { useGetExerciseQuery } from '#/api/services/exerciseApi';
 
+import FORMAT from '#/constants/format';
+
 const DashboardPage = () => {
   const navigate = useNavigate();
   const [totalDuration, setTotalDuration] = useState(0);
@@ -22,8 +24,8 @@ const DashboardPage = () => {
     useGetExerciseQuery(
       {
         userId: userInfo?.id ?? '',
-        startDate: dayjs().subtract(7, 'day').format('YYYY-MM-DD'),
-        endDate: dayjs().format('YYYY-MM-DD'),
+        startDate: dayjs().subtract(7, 'day').format(FORMAT.DATE),
+        endDate: dayjs().format(FORMAT.DATE),
       },
       {
         skip: !userInfo?.id,

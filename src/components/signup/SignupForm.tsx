@@ -9,6 +9,9 @@ import Input from '#/components/common/input/Input';
 
 import { usePostSignupMutation } from '#/api/services/authApi';
 
+import MESSAGE from '#/constants/message';
+import ROUTE from '#/constants/route';
+
 import EyeSlashIcon from '#assets/icon/eye-slash-regular.svg?react';
 import EyeIcon from '#assets/icon/eye-regular.svg?react';
 
@@ -33,21 +36,24 @@ const SignupForm = () => {
     .shape({
       id: yup
         .string()
-        .matches(/^[A-Za-z0-9]+$/i, '유효한 아이디를 입력해주세요')
-        .required('아이디를 입력해주세요'),
+        .matches(/^[A-Za-z0-9]+$/i, MESSAGE.FORM.SIGNUP.ID.VALIDATION)
+        .required(MESSAGE.FORM.SIGNUP.ID.VALIDATION),
       nickname: yup
         .string()
-        .max(10, '10글자 이하여야 합니다.')
-        .matches(/^[A-Za-z0-9]+$/i, '유효한 닉네임을 입력해주세요')
-        .required('닉네임을 입력해주세요'),
+        .max(10, MESSAGE.FORM.SIGNUP.NICKNAME.MAX_LENGTH)
+        .matches(/^[A-Za-z0-9]+$/i, MESSAGE.FORM.SIGNUP.NICKNAME.VALIDATION)
+        .required(MESSAGE.FORM.REQUIRED('닉네임을')),
       password: yup
         .string()
-        .min(8, '8글자 이상이어야 합니다.')
-        .required('비밀번호를 입력해주세요'),
+        .required(MESSAGE.FORM.REQUIRED('비밀번호를'))
+        .min(8, MESSAGE.FORM.SIGNUP.PASSWORD.MIN_LENGTH),
       passwordConfirm: yup
         .string()
-        .oneOf([yup.ref('password')], '비밀번호가 일치하지 않습니다')
-        .required('비밀번호 확인을 입력해주세요'),
+        .oneOf(
+          [yup.ref('password')],
+          MESSAGE.FORM.SIGNUP.PASSWORD_CONFIRM.NOT_MATCH,
+        )
+        .required(MESSAGE.FORM.REQUIRED('비밀번호를')),
     })
     .required();
 
@@ -62,7 +68,7 @@ const SignupForm = () => {
   });
 
   useEffect(() => {
-    const subscription = watch((value, { name }) => {
+    const subscription = watch((_, { name }) => {
       if (name === 'password') {
         trigger('passwordConfirm');
       }
@@ -77,7 +83,7 @@ const SignupForm = () => {
       await postSignup(data);
 
       if (isSuccess) {
-        navigate('/login');
+        navigate(ROUTE.LOGIN);
       } else {
         console.log('다시 한번 시도해 주세요');
       }
@@ -91,20 +97,20 @@ const SignupForm = () => {
       <div className="flex flex-col gap-4">
         <Input
           label="ID"
-          placeholder="Enter your ID"
+          placeholder={MESSAGE.FORM.REQUIRED('ID를')}
           errorMessage={errors.id?.message}
           {...register('id')}
         />
         <Input
           label="Nickname"
-          placeholder="Enter your Nickname"
+          placeholder={MESSAGE.FORM.REQUIRED('닉네임을')}
           errorMessage={errors.nickname?.message}
           {...register('nickname')}
         />
         <Input
           label="Password"
           type={showPassword ? 'text' : 'password'}
-          placeholder="Enter your Password"
+          placeholder={MESSAGE.FORM.REQUIRED('비밀번호를')}
           errorMessage={errors.password?.message}
           {...register('password')}
         >
@@ -122,7 +128,7 @@ const SignupForm = () => {
         <Input
           label="Confirm Password"
           type={showConfirmPassword ? 'text' : 'password'}
-          placeholder="Enter your Password"
+          placeholder={MESSAGE.FORM.REQUIRED('비밀번호를 한 번 더')}
           errorMessage={errors.passwordConfirm?.message}
           {...register('passwordConfirm')}
         >

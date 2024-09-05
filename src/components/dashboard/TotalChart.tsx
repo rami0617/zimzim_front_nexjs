@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import {
@@ -13,6 +13,9 @@ import dayjs from 'dayjs';
 import { useGetUserInfoQuery } from '#/api/services/userApi';
 import { useGetExerciseQuery } from '#/api/services/exerciseApi';
 
+import FORMAT from '#/constants/format';
+import ROUTE from '#/constants/route';
+
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
 const TotalChart = () => {
@@ -20,16 +23,20 @@ const TotalChart = () => {
 
   const { data: userInfo } = useGetUserInfoQuery();
 
-  const dateRagne = Array.from({ length: 7 }, (_, i) =>
-    dayjs().subtract(6, 'day').add(i, 'day').format('YYYY-MM-DD'),
+  const dateRagne = useMemo(
+    () =>
+      Array.from({ length: 7 }, (_, i) =>
+        dayjs().subtract(6, 'day').add(i, 'day').format(FORMAT.DATE),
+      ),
+    [],
   );
 
   const { data: exerciseData, isLoading: isExerciseLoading } =
     useGetExerciseQuery(
       {
         userId: userInfo?.id ?? '',
-        startDate: dayjs().subtract(7, 'day').format('YYYY-MM-DD'),
-        endDate: dayjs().format('YYYY-MM-DD'),
+        startDate: dayjs().subtract(7, 'day').format(FORMAT.DATE),
+        endDate: dayjs().format(FORMAT.DATE),
       },
       { skip: !userInfo },
     );
@@ -44,7 +51,7 @@ const TotalChart = () => {
       {
         data: dateRagne.map((date) => {
           const filter = exerciseData?.filter(
-            (exercise) => dayjs(exercise.date).format('YYYY-MM-DD') === date,
+            (exercise) => dayjs(exercise.date).format(FORMAT.DATE) === date,
           );
 
           if (filter && filter?.length > 0) {
@@ -89,9 +96,7 @@ const TotalChart = () => {
       <Line
         data={data}
         options={options}
-        onClick={() => {
-          navigate('/exercise');
-        }}
+        onClick={() => navigate(ROUTE.EXERCISE.LIST)}
       />
     </div>
   );

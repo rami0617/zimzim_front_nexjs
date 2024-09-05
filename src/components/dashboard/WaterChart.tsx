@@ -10,6 +10,7 @@ import {
   Legend,
 } from 'chart.js';
 import { useNavigate } from 'react-router-dom';
+import ROUTE from '#/constants/route';
 
 ChartJS.register(
   CategoryScale,
@@ -62,7 +63,7 @@ const WaterChart = () => {
   return (
     <div
       className="bg-white rounded-lg border-1 h-32 pb-6 pt-2 px-4 w-full cursor-pointer"
-      onClick={() => navigate('/water')}
+      onClick={() => navigate(ROUTE.WATER)}
     >
       <p className="text-sm font-bold">Water Total Volume</p>
       <Bar data={data} options={options} />
