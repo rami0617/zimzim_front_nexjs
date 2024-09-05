@@ -15,6 +15,11 @@ import ExerciseForm, {
 } from '#/components/exercise/post/ExerciseForm';
 
 import { AppDispatch } from '#/stores/store';
+import { EXERCISE_FORCE_TYPE, EXERCISE_TYPE } from '#/api/types';
+
+import API_ENDPOINT from '#/constants/api';
+import MESSAGE from '#/constants/message';
+import FORMAT from '#/constants/format';
 
 const ExerciseUpdatePage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -34,13 +39,12 @@ const ExerciseUpdatePage = () => {
 
       try {
         await updateExercise({
-          id,
+          id: id ?? '',
           payload: {
-            date,
             duration,
-            force,
+            force: force as EXERCISE_FORCE_TYPE,
             isPT,
-            type,
+            type: type as EXERCISE_TYPE,
           },
         }).unwrap();
 
@@ -50,8 +54,8 @@ const ExerciseUpdatePage = () => {
             { type: 'Exercise', id: 'DETAIL' },
           ]),
         );
-        alert('수정이 완료 되었습니다');
-        navigate('/exercise');
+        alert(MESSAGE.COMPLETED('수정'));
+        navigate(API_ENDPOINT.EXERCISE.EXERCISE);
       } catch (error) {
         console.log('Error updating exercise:', error);
       }
@@ -61,7 +65,7 @@ const ExerciseUpdatePage = () => {
   useEffect(() => {
     if (data) {
       setDefaultValues({
-        date: dayjs(data.date).format('YYYY-MM-DD'),
+        date: dayjs(data.date).format(FORMAT.DATE),
         isPT: data.isPT,
         duration: data.detail[0].duration,
         type: data.detail[0].type,

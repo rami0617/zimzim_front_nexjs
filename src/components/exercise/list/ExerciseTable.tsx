@@ -1,4 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   createColumnHelper,
   flexRender,
@@ -17,7 +18,6 @@ import { useGetExerciseColumns } from '#/hooks/useExerciseColumns';
 
 import LeftArrowIcon from '#assets/icon/left-arrow.svg?react';
 import RightArrowIcon from '#assets/icon/right-arrow.svg?react';
-import { useNavigate } from 'react-router-dom';
 
 interface ExerciseTableProps {
   checkedExercise: string[];

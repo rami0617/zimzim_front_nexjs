@@ -37,20 +37,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref,
   ) => {
-    const [internalValue, setInternalValue] = useState<string>(defaultValue);
-
-    const isControlled = value !== undefined;
-
-    useEffect(() => {
-      if (isControlled) {
-        setInternalValue(value);
-      }
-    }, [value]);
-
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-      if (!isControlled) {
-        setInternalValue(event.target.value);
-      }
       onChange?.(event);
     };
 
@@ -73,7 +60,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               placeholder={placeholder}
               autoComplete={autoComplete}
               ref={ref}
-              value={isControlled ? value : internalValue}
+              value={value}
               {...props}
             />
             {children}

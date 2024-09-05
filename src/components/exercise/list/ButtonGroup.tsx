@@ -9,6 +9,9 @@ import {
   useGetExerciseListQuery,
 } from '#/api/services/exerciseApi';
 import { useGetUserInfoQuery } from '#/api/services/userApi';
+import { ExerciseDetail } from '#/api/types';
+import { ACTION_BUTTON } from '#/constants/style';
+import ROUTE from '#/constants/route';
 
 interface ButtonGroupProps {
   checkedExercise: string[];
@@ -32,30 +35,35 @@ const ButtonGroup = ({ checkedExercise, page }: ButtonGroupProps) => {
   );
 
   const handleDeleteExercise = async () => {
-    let temp = checkedExercise.flatMap((exercise) =>
-      exerciseData?.items.filter((item) =>
-        item.detail.find((ele) => ele._id === exercise),
-      ),
-    );
+    if (checkedExercise.length && exerciseData && exerciseData?.items.length) {
+      let temp = checkedExercise.flatMap((exercise) =>
+        exerciseData.items.filter((item) =>
+          item.detail.find((ele) => ele._id === exercise),
+        ),
+      );
 
-    const ids = Array.from(new Set(temp.map((ele) => ele?._id)));
+      const ids = Array.from(new Set(temp.map((ele) => ele?._id)));
 
-    const payload = ids.map((exerciseId) => {
-      const exercise = temp.find((exercise) => exercise?._id === exerciseId);
+      const payload = ids.map((exerciseId) => {
+        const exercise = temp.find((exercise) => exercise._id === exerciseId);
 
-      const detailIds = exercise?.detail
-        .filter((detail) => checkedExercise.includes(detail._id as string))
-        .map((detail) => detail._id);
+        const detailIds = exercise?.detail
+          .filter((detail: ExerciseDetail) =>
+            checkedExercise.includes(detail._id ?? ''),
+          )
+          .map((detail: ExerciseDetail) => detail._id)
+          .filter((id): id is string => !!id);
 
-      return {
-        exerciseId,
-        detailIds,
-      };
-    });
-    try {
-      await deleteExerciseDetail(payload).unwrap();
-    } catch (error) {
-      console.log(error);
+        return {
+          exerciseId,
+          detailIds: detailIds ?? [],
+        };
+      });
+      try {
+        await deleteExerciseDetail(payload).unwrap();
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -63,7 +71,8 @@ const ButtonGroup = ({ checkedExercise, page }: ButtonGroupProps) => {
     <div className="flex flex-row justify-end gap-4">
       <Button
         className={twMerge(
-          `bg-red-500 w-[120px] h-12 rounded-lg text-white font-bold text-md border-1 border-gray-light
+          ACTION_BUTTON,
+          `bg-red-500
           ${isDeleteDisabled && 'cursor-not-allowed'}`,
         )}
         disabled={isDeleteDisabled}
@@ -72,8 +81,8 @@ const ButtonGroup = ({ checkedExercise, page }: ButtonGroupProps) => {
         삭제
       </Button>
       <Button
-        className="bg-primary w-[120px] h-12 rounded-lg text-white font-bold text-md border-1 border-gray-light"
-        onClick={() => navigate('/exercise/post')}
+        className={twMerge(ACTION_BUTTON, 'bg-primary')}
+        onClick={() => navigate(ROUTE.EXERCISE.POST)}
       >
         추가
       </Button>

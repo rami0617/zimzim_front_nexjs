@@ -9,7 +9,7 @@ interface ContentBoxProps {
 const ContentBox = ({ children, className = '' }: ContentBoxProps) => (
   <div
     className={twMerge(
-      `flex flex-col w-2/6 justify-between bg-white px-8 py-8 border-1 border-gray-light ${className}`,
+      `flex flex-col w-2/6 justify-between bg-white p-8 border-1 border-gray-light ${className}`,
     )}
   >
     {children}

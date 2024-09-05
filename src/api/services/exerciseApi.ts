@@ -1,14 +1,22 @@
-import { AxiosResponse } from 'axios';
-
 import { baseApi } from '#api/baseApi';
 
-import { Exercise, GetExercisePayload, PostExercisePayload } from '#api/type';
+import {
+  DeleteExerciseDetailPayload,
+  Exercise,
+  ExerciseList,
+  GetExerciseListPayload,
+  GetExercisePayload,
+  PostExercisePayload,
+  UpdateExercisePayload,
+} from '#/api/types';
+
+import API_ENDPOINT from '#/constants/api';
 
 export const exerciseApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getExercise: build.query<Exercise[], GetExercisePayload>({
-      query: (payload) => ({
-        url: '/exercise',
+      query: (payload: GetExercisePayload) => ({
+        url: API_ENDPOINT.EXERCISE.EXERCISE,
         method: 'GET',
         params: {
           id: payload.userId,
@@ -16,22 +24,14 @@ export const exerciseApi = baseApi.injectEndpoints({
           endDate: payload.endDate,
         },
       }),
-      providesTags: (result, error, arg) =>
+      providesTags: (result) =>
         result
           ? result.map((exercise) => ({ type: 'Exercise', id: exercise._id }))
           : [{ type: 'Exercise', id: 'Exercise' }],
     }),
-    getExerciseList: build.query<
-      {
-        currentPage: number;
-        items: Exercise[];
-        totalItems: number;
-        totalPages: number;
-      },
-      { userId: string; page: number; limit: number }
-    >({
-      query: (payload) => ({
-        url: '/exercise/list',
+    getExerciseList: build.query<ExerciseList, GetExerciseListPayload>({
+      query: (payload: GetExerciseListPayload) => ({
+        url: API_ENDPOINT.EXERCISE.LIST,
         method: 'GET',
         params: {
           id: payload.userId,
@@ -39,9 +39,9 @@ export const exerciseApi = baseApi.injectEndpoints({
           limit: payload.limit,
         },
       }),
-      providesTags: (result, error, arg) =>
+      providesTags: (result) =>
         result
-          ? result.items.map((exercise) => ({
+          ? result.items.map((exercise: Exercise) => ({
               type: 'Exercise',
               id: exercise._id,
             }))
@@ -49,41 +49,33 @@ export const exerciseApi = baseApi.injectEndpoints({
     }),
     getExerciseDetail: build.query({
       query: (id: string) => ({
-        url: `/exercise/detail/${id}`,
+        url: API_ENDPOINT.EXERCISE.DETAIL(id),
         method: 'GET',
       }),
-      providesTags: (result, error, arg) => [
-        { type: 'Exercise', id: 'DETAIL' },
-      ],
+      providesTags: () => [{ type: 'Exercise', id: 'DETAIL' }],
     }),
-    postExercise: build.mutation<
-      Pick<AxiosResponse, 'data'>,
-      PostExercisePayload
-    >({
-      query: (payload) => ({
-        url: '/exercise',
+    postExercise: build.mutation<void, PostExercisePayload>({
+      query: (payload: PostExercisePayload) => ({
+        url: API_ENDPOINT.EXERCISE.EXERCISE,
         method: 'POST',
         data: payload,
       }),
     }),
-    updateExercise: build.mutation({
-      query: ({ id, payload }) => ({
-        url: `/exercise/detail/${id}`,
+    updateExercise: build.mutation<void, UpdateExercisePayload>({
+      query: ({ id, payload }: UpdateExercisePayload) => ({
+        url: API_ENDPOINT.EXERCISE.DETAIL(id),
         method: 'POST',
         data: payload,
       }),
     }),
-    deleteExerciseDetail: build.mutation({
-      query: (payload) => ({
-        url: '/exercise/details',
+    deleteExerciseDetail: build.mutation<void, DeleteExerciseDetailPayload[]>({
+      query: (payload: DeleteExerciseDetailPayload[]) => ({
+        url: API_ENDPOINT.EXERCISE.DETAILS,
         method: 'POST',
         data: {
           exerciseDetails: payload,
         },
       }),
-      invalidatesTags: (result, error, { exerciseId }) => [
-        { type: 'Exercise', id: exerciseId },
-      ],
     }),
   }),
 });

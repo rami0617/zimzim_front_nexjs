@@ -1,3 +1,4 @@
+import API_ENDPOINT from '#/constants/api';
 import axios from 'axios';
 
 let navigateFunction: (path: string) => void;
@@ -13,7 +14,7 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const { url } = config;
 
-    if (!url?.startsWith('/auth/sign-up')) {
+    if (!url?.startsWith(API_ENDPOINT.AUTH.SIGN_UP)) {
       config.withCredentials = true;
     }
     return config;
@@ -35,7 +36,7 @@ axiosInstance.interceptors.response.use(
       if (status === 401 || status === 403) {
         try {
           const response = await axios.post(
-            `${import.meta.env.VITE_SERVER_URL}/auth/refresh-token`,
+            `${import.meta.env.VITE_SERVER_URL}${API_ENDPOINT.AUTH.REFRESH_TOKEN}`,
           );
 
           originalRequest.headers['Authorization'] =

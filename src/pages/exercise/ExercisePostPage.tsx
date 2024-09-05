@@ -17,7 +17,10 @@ import {
 
 import { getKoreaDate } from '#/util';
 
-import { EXERCISE_FORCE_TYPE, EXERCISE_TYPE } from '#/api/type';
+import ROUTE from '#/constants/route';
+import MESSAGE from '#/constants/message';
+
+import { EXERCISE_FORCE_TYPE, EXERCISE_TYPE } from '#/api/types';
 
 const ExercisePostPage = () => {
   const today = getKoreaDate();
@@ -91,8 +94,8 @@ const ExercisePostPage = () => {
             { type: 'Exercise', id: 'Exercise' },
           ]),
         );
-        alert('등록이 완료되었습니다');
-        navigate('/');
+        alert(MESSAGE.COMPLETED('등록이'));
+        navigate(ROUTE.MAIN_PAGE);
       } catch (error) {
         console.log(error, 'error');
       }

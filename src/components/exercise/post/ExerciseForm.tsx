@@ -8,11 +8,18 @@ import Button from '#components/common/Button';
 import Badge from '#/components/exercise/post/Badge';
 import ControllerInput from '#/components/common/input/ControllerInput';
 import RadioInput from '#/components/common/input/RadioInput';
-import ControllerSelectBox from '#/components/common/SelectBox/ControllerSelectBox';
+import ControllerSelectBox from '#/components/common/selectBox/ControllerSelectBox';
 
-import { EXERCISE_FORCE_TYPE, EXERCISE_TYPE } from '#/api/type';
+import { EXERCISE_FORCE_TYPE, EXERCISE_TYPE } from '#/api/types';
+
+import MESSAGE from '#/constants/message';
+import {
+  EXERCISE_FORCE_OPTION,
+  EXERCISE_TYPE_OPTION,
+} from '#/constants/option';
 
 import DeleteIcon from '#assets/icon/delete.svg?react';
+import { PRIMARY_BUTTON } from '#/constants/style';
 
 export type ExercisePostFormInput = {
   _id?: string | null;
@@ -42,17 +49,17 @@ const ExerciseForm = ({
 
   const schema: yup.ObjectSchema<ExercisePostFormInput> = yup.object().shape({
     _id: yup.string().notRequired(),
-    date: yup.string().required('날짜를 입력해주세요'),
-    isPT: yup.string().required('PT 여부를 선택해주세요.'),
-    duration: yup.string().required('운동 시간을 입력해 주세요'),
+    date: yup.string().required(MESSAGE.FORM.EXERCISE.DATE),
+    isPT: yup.string().required(MESSAGE.FORM.EXERCISE.PT),
+    duration: yup.string().required(MESSAGE.FORM.EXERCISE.DURATION),
     type: yup
       .mixed<EXERCISE_TYPE>()
       .oneOf(Object.values(EXERCISE_TYPE))
-      .required('운동 종류를 입력해주세요'),
+      .required(MESSAGE.FORM.EXERCISE.TYPE),
     force: yup
       .mixed<EXERCISE_FORCE_TYPE>()
       .oneOf(Object.values(EXERCISE_FORCE_TYPE))
-      .required('운동 강도를 입력해주세요'),
+      .required(MESSAGE.FORM.EXERCISE.FORCE),
   });
 
   const {
@@ -85,13 +92,6 @@ const ExerciseForm = ({
           alert('최대 2개까지 기록 가능합니다.');
         } else {
           setExerciseList([...newExerciseList]);
-          // reset({
-          //   date: defaultValues?.date,
-          //   duration: '',
-          //   isPT: 'Y',
-          //   type: undefined,
-          //   force: undefined,
-          // });
           trigger();
         }
       }
@@ -100,6 +100,31 @@ const ExerciseForm = ({
 
     return () => subscription.unsubscribe();
   }, [watch, trigger, reset, exerciseList]);
+
+  const renderBadge = () =>
+    exerciseList.map((exercise: ExercisePostFormInput) => {
+      const info = Object.entries(exercise).map((element) =>
+        element[0] === 'duration'
+          ? (element = [element[0], element[1] + '분'])
+          : element,
+      );
+      const content = info?.reduce((acc, cur) => acc + ' ' + cur[1], '');
+
+      return (
+        <Badge content={content} key={content}>
+          <Button
+            className="p-1"
+            onClick={() => {
+              setExerciseList((prev: ExercisePostFormInput[]) =>
+                prev.filter((element) => element !== exercise),
+              );
+            }}
+          >
+            <DeleteIcon width={8} height={10} />
+          </Button>
+        </Badge>
+      );
+    });
 
   const onSubmit = (data: ExercisePostFormInput) =>
     submitFunction(
@@ -155,10 +180,7 @@ const ExerciseForm = ({
           name="type"
           control={control}
           label="운동 종류"
-          options={[
-            { value: EXERCISE_TYPE.WEIGHT, name: 'weight' },
-            { value: EXERCISE_TYPE.CARDIO, name: 'cardio' },
-          ]}
+          options={EXERCISE_TYPE_OPTION}
           selectId="type"
           selectName="type"
           placeHolder="종류를 선택해 주세요"
@@ -181,11 +203,7 @@ const ExerciseForm = ({
           name="force"
           control={control}
           label="운동 강도"
-          options={[
-            { value: EXERCISE_FORCE_TYPE.EASY, name: 'easy' },
-            { value: EXERCISE_FORCE_TYPE.MEDIUM, name: 'medium' },
-            { value: EXERCISE_FORCE_TYPE.HARD, name: 'hard' },
-          ]}
+          options={EXERCISE_FORCE_OPTION}
           selectId="force"
           selectName="force"
           selectClassName="w-[220px]"
@@ -194,38 +212,10 @@ const ExerciseForm = ({
         />
       </div>
       <div className="flex flex-row gap-2 h-6">
-        {isUseBadge &&
-          exerciseList.map((exercise: ExercisePostFormInput) => {
-            const newExercise = Object.entries(exercise).map((element) =>
-              element[0] === 'duration'
-                ? (element = [element[0], element[1] + '분'])
-                : element,
-            );
-            const content = newExercise?.reduce(
-              (acc, cur) => acc + ' ' + cur[1],
-              '',
-            );
-            return (
-              <Badge content={content} key={content}>
-                <Button
-                  className="p-1"
-                  onClick={() => {
-                    setExerciseList((prev: ExercisePostFormInput[]) =>
-                      prev.filter((element) => element !== exercise),
-                    );
-                  }}
-                >
-                  <DeleteIcon width={8} height={10} />
-                </Button>
-              </Badge>
-            );
-          })}
+        {isUseBadge && renderBadge()}
       </div>
 
-      <Button
-        type="submit"
-        className="bg-primary h-12 w-full rounded-lg text-white font-bold text-xl border-1 border-gray-light"
-      >
+      <Button type="submit" className={PRIMARY_BUTTON}>
         {submitButtonTitle}
       </Button>
     </form>
