@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useGetExerciseListQuery } from '#/api/services/exerciseApi';
 import { useGetUserInfoQuery } from '#/api/services/userApi';
-import { Exercise } from '#/api/type';
+import { Exercise } from '#/api/types';
 
 export type FlattenedExercise = Pick<Exercise, 'date' | 'isPT'> &
   Pick<Exercise['detail'][number], 'type' | 'duration' | 'force' | '_id'>;

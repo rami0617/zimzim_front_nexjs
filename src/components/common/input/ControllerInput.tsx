@@ -1,13 +1,14 @@
-import { ExercisePostFormInput } from '#/components/exercise/post/ExerciseForm';
 import React from 'react';
-import { Control, Controller } from 'react-hook-form';
-import Input from './Input';
+import { Control, Controller, FieldError } from 'react-hook-form';
+
+import Input from '#components/common/input/Input';
+import { ExercisePostFormInput } from '#/components/exercise/post/ExerciseForm';
 
 interface ControllerInputProps {
   name: keyof ExercisePostFormInput;
   control: Control<ExercisePostFormInput, any>;
   placeholder: string;
-  error: any;
+  error?: FieldError;
   label: string;
   type: string;
   defaultValue: string;
@@ -29,13 +30,13 @@ const ControllerInput = ({
   max,
   disabled,
   min,
-  ...rest
+  ...props
 }: ControllerInputProps) => {
   return (
     <Controller
       name={name}
       control={control}
-      defaultValue={defaultValue ?? ''}
+      defaultValue={defaultValue}
       render={({ field }) => (
         <Input
           {...field}
@@ -49,7 +50,7 @@ const ControllerInput = ({
           min={min}
           disabled={disabled}
           value={field.value ?? ''}
-          {...rest}
+          {...props}
         />
       )}
     />

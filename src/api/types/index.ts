@@ -19,12 +19,6 @@ export interface ExerciseState {
   exercise: Exercise[];
 }
 
-export interface GetExercisePayload {
-  userId: string;
-  startDate?: string;
-  endDate?: string;
-}
-
 export type ExerciseDetail = {
   _id?: string;
   duration: string;
@@ -32,12 +26,42 @@ export type ExerciseDetail = {
   force: EXERCISE_FORCE_TYPE;
 };
 
+export interface ExerciseList {
+  currentPage: number;
+  items: Exercise[];
+  totalItems: number;
+  totalPages: number;
+}
+
+export interface GetExercisePayload {
+  userId: string;
+  startDate?: string;
+  endDate?: string;
+}
+
+export interface GetExerciseListPayload {
+  userId: string;
+  page: number;
+  limit: number;
+}
+
 export interface PostExercisePayload {
   userId: string;
   date: string;
   totalDuration: string;
   isPT: string;
   detail: ExerciseDetail[];
+}
+
+export interface UpdateExercisePayload {
+  id: string;
+  payload: Pick<Exercise, 'isPT'> &
+    Pick<Exercise['detail'][number], 'duration' | 'force' | 'type'>;
+}
+
+export interface DeleteExerciseDetailPayload {
+  exerciseId: string;
+  detailIds: string[];
 }
 
 export interface Exercise {

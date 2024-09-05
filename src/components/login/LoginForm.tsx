@@ -7,6 +7,11 @@ import ErrorMessage from '#components/common/ErrorMessage';
 
 import { usePostLoginMutation } from '#/api/services/authApi';
 
+import ROUTE from '#/constants/route';
+import MESSAGE from '#/constants/message';
+import { PRIMARY_BUTTON } from '#/constants/style';
+import { twMerge } from 'tailwind-merge';
+
 const LoginForm = () => {
   const navigate = useNavigate();
 
@@ -29,7 +34,7 @@ const LoginForm = () => {
           password: passwordRef.current?.value ?? '',
         }).unwrap();
 
-        navigate('/');
+        navigate(ROUTE.MAIN_PAGE);
       } catch (error) {
         console.error('Error during login:', error);
 
@@ -39,11 +44,11 @@ const LoginForm = () => {
   };
 
   return (
-    <form className="flex flex-col gap-6" onSubmit={handleLogin}>
-      <div className="flex flex-col gap-6">
+    <form className="flex flex-col gap-5" onSubmit={handleLogin}>
+      <div className="flex flex-col gap-4">
         <Input
           label="ID"
-          placeholder="Enter your ID"
+          placeholder={MESSAGE.FORM.REQUIRED('ID를')}
           autoComplete="username"
           defaultValue=""
           name="id"
@@ -53,19 +58,14 @@ const LoginForm = () => {
           name="password"
           label="Password"
           type="password"
-          placeholder="Enter your password"
+          placeholder={MESSAGE.FORM.REQUIRED('비밀번호를')}
           autoComplete="current-password"
           defaultValue=""
           ref={passwordRef}
         />
-        {hasError && (
-          <ErrorMessage message="아이디 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요." />
-        )}
+        {<ErrorMessage message={hasError ? MESSAGE.FORM.LOGIN.FAILURE : ''} />}
       </div>
-      <Button
-        type="submit"
-        className="bg-primary h-14 w-full rounded-lg text-white font-bold text-xl border-1 border-gray-light"
-      >
+      <Button type="submit" className={twMerge(PRIMARY_BUTTON, 'h-14')}>
         Sign In
       </Button>
     </form>

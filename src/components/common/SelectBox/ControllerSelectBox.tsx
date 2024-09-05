@@ -1,7 +1,9 @@
-import { ExercisePostFormInput } from '#/components/exercise/post/ExerciseForm';
 import React from 'react';
-import { Control, Controller } from 'react-hook-form';
-import SelectBox from './SelectBox';
+import { Control, Controller, FieldError } from 'react-hook-form';
+
+import { ExercisePostFormInput } from '#/components/exercise/post/ExerciseForm';
+
+import SelectBox from '#/components/common/selectBox/SelectBox';
 
 interface ControllerSelectBoxProps {
   name: keyof ExercisePostFormInput;
@@ -12,7 +14,7 @@ interface ControllerSelectBoxProps {
   selectName: string;
   selectClassName: string;
   placeHolder: string;
-  error: any;
+  error?: FieldError;
 }
 
 const ControllerSelectBox = ({
@@ -25,7 +27,7 @@ const ControllerSelectBox = ({
   selectClassName,
   placeHolder,
   error,
-  ...rest
+  ...props
 }: ControllerSelectBoxProps) => {
   return (
     <Controller
@@ -43,7 +45,7 @@ const ControllerSelectBox = ({
           placeHolder={placeHolder}
           errorMessage={error?.message}
           value={field.value ?? undefined}
-          {...rest}
+          {...props}
         />
       )}
     />

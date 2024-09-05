@@ -1,14 +1,17 @@
 import { baseApi } from '#api/baseApi';
-import { User } from '#api/type';
+
+import { User } from '#/api/types';
+
+import API_ENDPOINT from '#/constants/api';
 
 export const userApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getUserInfo: build.query<User, void>({
       query: () => ({
-        url: '/user/info',
+        url: API_ENDPOINT.USER.INFO,
         method: 'GET',
       }),
-      providesTags: (result, error, arg) => [{ type: 'User', id: 'User' }],
+      providesTags: () => [{ type: 'User', id: 'User' }],
     }),
   }),
 });

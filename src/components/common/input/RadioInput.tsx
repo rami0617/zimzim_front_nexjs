@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { ChangeEventHandler, InputHTMLAttributes } from 'react';
 
-interface RadioInputProps {
+interface RadioInputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   value: string;
   checked: boolean;
-  onChange: () => void;
+  onChange: ChangeEventHandler<HTMLInputElement>;
   label: string;
+  id?: string;
 }
 
 const RadioInput = ({
@@ -14,17 +15,25 @@ const RadioInput = ({
   checked,
   onChange,
   label,
+  id,
+  ...props
 }: RadioInputProps) => {
+  const inputId = id ?? `${name}-${value}`;
+
   return (
     <div>
       <input
+        id={inputId}
         type="radio"
         name={name}
         value={value}
         checked={checked}
         onChange={onChange}
+        {...props}
       />
-      <label className="pl-2">{label}</label>
+      <label className="pl-2" htmlFor={inputId}>
+        {label}
+      </label>
     </div>
   );
 };

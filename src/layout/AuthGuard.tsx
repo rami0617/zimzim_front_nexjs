@@ -4,6 +4,8 @@ import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { setNavigateFunction } from '#/api/axios';
 import { useGetUserInfoQuery } from '#/api/services/userApi';
 
+import ROUTE from '#/constants/route';
+
 const AuthGuard = () => {
   const navigate = useNavigate();
 
@@ -18,10 +20,10 @@ const AuthGuard = () => {
   if (
     !data &&
     isSuccess &&
-    location.pathname !== '/login' &&
-    location.pathname !== '/sign-up'
+    location.pathname !== ROUTE.LOGIN &&
+    location.pathname !== ROUTE.SIGN_UP
   ) {
-    return <Navigate to="/login" />;
+    return <Navigate to={ROUTE.LOGIN} />;
   }
 
   return (

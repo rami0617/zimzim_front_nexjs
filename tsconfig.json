@@ -20,7 +20,8 @@
       "#assets/*": ["src/assets/*"],
       "#stores/*": ["src/stores/*"],
       "#hooks/*": ["src/hooks/*"],
-      "#util/*": ["src/util/*"]
+      "#util/*": ["src/util/*"],
+      "#constants/*": ["src/constants/*"]
     }
   },
   "include": ["src", "vite.config.ts"],
