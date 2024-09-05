@@ -17,9 +17,9 @@ import {
   EXERCISE_FORCE_OPTION,
   EXERCISE_TYPE_OPTION,
 } from '#/constants/option';
+import { PRIMARY_BUTTON } from '#/constants/style';
 
 import DeleteIcon from '#assets/icon/delete.svg?react';
-import { PRIMARY_BUTTON } from '#/constants/style';
 
 export type ExercisePostFormInput = {
   _id?: string | null;
@@ -89,7 +89,7 @@ const ExerciseForm = ({
         ] as ExercisePostFormInput[];
 
         if (newExerciseList.length > 2) {
-          alert('최대 2개까지 기록 가능합니다.');
+          alert(MESSAGE.FORM.MAX_LENGTH('2개'));
         } else {
           setExerciseList([...newExerciseList]);
           trigger();
@@ -145,7 +145,7 @@ const ExerciseForm = ({
           type="date"
           placeholder="2024/00/00"
           inputClassName={twMerge(
-            `w-[220px] ${!isUseBadge && 'cursor-not-allowed'}`,
+            `w-52 ${!isUseBadge && 'cursor-not-allowed'}`,
           )}
           max={defaultValues?.date}
           disabled={!isUseBadge}
@@ -185,7 +185,7 @@ const ExerciseForm = ({
           selectName="type"
           placeHolder="종류를 선택해 주세요"
           error={errors?.type}
-          selectClassName="w-[220px]"
+          selectClassName="w-52"
         />
         <ControllerInput
           name="duration"
@@ -194,7 +194,7 @@ const ExerciseForm = ({
           label="운동 시간"
           type="number"
           placeholder="0분"
-          inputClassName="w-[220px]"
+          inputClassName="w-52"
           error={errors?.duration}
           min={1}
           max={60}
@@ -206,7 +206,7 @@ const ExerciseForm = ({
           options={EXERCISE_FORCE_OPTION}
           selectId="force"
           selectName="force"
-          selectClassName="w-[220px]"
+          selectClassName="w-52"
           placeHolder="강도를 선택해 주세요"
           error={errors?.force}
         />

@@ -17,9 +17,9 @@ import ExerciseForm, {
 import { AppDispatch } from '#/stores/store';
 import { EXERCISE_FORCE_TYPE, EXERCISE_TYPE } from '#/api/types';
 
-import API_ENDPOINT from '#/constants/api';
 import MESSAGE from '#/constants/message';
 import FORMAT from '#/constants/format';
+import ROUTE from '#/constants/route';
 
 const ExerciseUpdatePage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -35,7 +35,7 @@ const ExerciseUpdatePage = () => {
     data: ExercisePostFormInput | ExercisePostFormInput[],
   ) => {
     if (!Array.isArray(data)) {
-      const { date, duration, force, isPT, type } = data;
+      const { duration, force, isPT, type } = data;
 
       try {
         await updateExercise({
@@ -55,7 +55,7 @@ const ExerciseUpdatePage = () => {
           ]),
         );
         alert(MESSAGE.COMPLETED('수정'));
-        navigate(API_ENDPOINT.EXERCISE.EXERCISE);
+        navigate(ROUTE.EXERCISE.DEFAULT);
       } catch (error) {
         console.log('Error updating exercise:', error);
       }

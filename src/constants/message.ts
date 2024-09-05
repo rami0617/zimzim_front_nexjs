@@ -2,7 +2,7 @@ const MESSAGE = {
   COMPLETED: (acting: string) => `${acting} 완료 되었습니다`,
   FORM: {
     REQUIRED: (acting: string) => `${acting} 입력해주세요`,
-
+    MAX_LENGTH: (count: string) => `최대 ${count}까지 가능합니다`,
     EXERCISE: {
       DATE: '날짜를 입력해주세요',
       PT: 'PT 여부를 선택해주세요',
