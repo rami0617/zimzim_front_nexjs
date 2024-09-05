@@ -10,6 +10,8 @@ import {
 } from '#/api/services/exerciseApi';
 import { useGetUserInfoQuery } from '#/api/services/userApi';
 import { ExerciseDetail } from '#/api/types';
+import { ACTION_BUTTON } from '#/constants/style';
+import ROUTE from '#/constants/route';
 
 interface ButtonGroupProps {
   checkedExercise: string[];
@@ -69,7 +71,8 @@ const ButtonGroup = ({ checkedExercise, page }: ButtonGroupProps) => {
     <div className="flex flex-row justify-end gap-4">
       <Button
         className={twMerge(
-          `bg-red-500 w-32 h-12 rounded-lg text-white font-bold text-md border-1 border-gray-light
+          ACTION_BUTTON,
+          `bg-red-500
           ${isDeleteDisabled && 'cursor-not-allowed'}`,
         )}
         disabled={isDeleteDisabled}
@@ -78,8 +81,8 @@ const ButtonGroup = ({ checkedExercise, page }: ButtonGroupProps) => {
         삭제
       </Button>
       <Button
-        className="bg-primary w-32 h-12 rounded-lg text-white font-bold text-md border-1 border-gray-light"
-        onClick={() => navigate('/exercise/post')}
+        className={twMerge(ACTION_BUTTON, 'bg-primary')}
+        onClick={() => navigate(ROUTE.EXERCISE.POST)}
       >
         추가
       </Button>

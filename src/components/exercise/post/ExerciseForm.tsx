@@ -19,6 +19,7 @@ import {
 } from '#/constants/option';
 
 import DeleteIcon from '#assets/icon/delete.svg?react';
+import { PRIMARY_BUTTON } from '#/constants/style';
 
 export type ExercisePostFormInput = {
   _id?: string | null;
@@ -214,10 +215,7 @@ const ExerciseForm = ({
         {isUseBadge && renderBadge()}
       </div>
 
-      <Button
-        type="submit"
-        className="bg-primary h-12 w-full rounded-lg text-white font-bold text-xl border-1 border-gray-light"
-      >
+      <Button type="submit" className={PRIMARY_BUTTON}>
         {submitButtonTitle}
       </Button>
     </form>

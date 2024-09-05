@@ -11,6 +11,7 @@ import { usePostSignupMutation } from '#/api/services/authApi';
 
 import MESSAGE from '#/constants/message';
 import ROUTE from '#/constants/route';
+import { PRIMARY_BUTTON } from '#/constants/style';
 
 import EyeSlashIcon from '#assets/icon/eye-slash-regular.svg?react';
 import EyeIcon from '#assets/icon/eye-regular.svg?react';
@@ -144,10 +145,7 @@ const SignupForm = () => {
           </div>
         </Input>
       </div>
-      <Button
-        type="submit"
-        className="bg-primary h-12 w-full rounded-lg text-white font-bold text-xl border-1 border-gray-light"
-      >
+      <Button type="submit" className={PRIMARY_BUTTON}>
         Sign Up
       </Button>
     </form>

@@ -6,6 +6,9 @@ import Button from '#/components/common/Button';
 import ContentBox from '#/components/common/ContentBox';
 
 import { useGetExerciseDetailQuery } from '#/api/services/exerciseApi';
+import { twMerge } from 'tailwind-merge';
+import { ACTION_BUTTON } from '#/constants/style';
+import FORMAT from '#/constants/format';
 
 const ExerciseDetailPage = () => {
   const { id } = useParams();
@@ -18,7 +21,7 @@ const ExerciseDetailPage = () => {
       <div className="flex flex-col gap-8 w-2/5">
         <div className="flex justify-end">
           <Button
-            className="bg-red-500 w-[120px] h-12 rounded-lg text-white font-bold text-md border-1 border-gray-light"
+            className={twMerge(ACTION_BUTTON, 'bg-primary')}
             onClick={() => navigate(`/exercise/update/${id}`)}
           >
             수정
@@ -27,7 +30,7 @@ const ExerciseDetailPage = () => {
         <div className="flex justify-center w-full">
           <ContentBox className="rounded-2xl w-full">
             <h1 className="text-center pb-8">
-              🏋️‍♀️ {dayjs(data?.date).format('YYYY-MM-DD')} 운동기록 🏋️‍♀️
+              🏋️‍♀️ {dayjs(data?.date).format(FORMAT.DATE)} 운동기록 🏋️‍♀️
             </h1>
             <hr />
             <div className="flex justify-between">

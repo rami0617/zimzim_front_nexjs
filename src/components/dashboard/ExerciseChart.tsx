@@ -112,7 +112,7 @@ const ExerciseChart = () => {
   return (
     <div
       className="w-1/3 bg-white rounded-lg border-1 pt-2 px-2 flex flex-col cursor-pointer h-full"
-      onClick={() => navigate(ROUTE.EXERCISE.LIST)}
+      onClick={() => navigate(ROUTE.EXERCISE.DEFAULT)}
     >
       <p className="text-sm font-bold pl-2">Weight/Cardio</p>
       <div className="w-full flex justify-center h-full p-2 items-center">

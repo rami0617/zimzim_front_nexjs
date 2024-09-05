@@ -96,7 +96,7 @@ const TotalChart = () => {
       <Line
         data={data}
         options={options}
-        onClick={() => navigate(ROUTE.EXERCISE.LIST)}
+        onClick={() => navigate(ROUTE.EXERCISE.DEFAULT)}
       />
     </div>
   );

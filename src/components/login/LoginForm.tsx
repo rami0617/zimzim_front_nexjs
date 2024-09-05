@@ -9,6 +9,8 @@ import { usePostLoginMutation } from '#/api/services/authApi';
 
 import ROUTE from '#/constants/route';
 import MESSAGE from '#/constants/message';
+import { PRIMARY_BUTTON } from '#/constants/style';
+import { twMerge } from 'tailwind-merge';
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -42,7 +44,7 @@ const LoginForm = () => {
   };
 
   return (
-    <form className="flex flex-col gap-6" onSubmit={handleLogin}>
+    <form className="flex flex-col gap-5" onSubmit={handleLogin}>
       <div className="flex flex-col gap-4">
         <Input
           label="ID"
@@ -63,10 +65,7 @@ const LoginForm = () => {
         />
         {<ErrorMessage message={hasError ? MESSAGE.FORM.LOGIN.FAILURE : ''} />}
       </div>
-      <Button
-        type="submit"
-        className="bg-primary h-14 w-full rounded-lg text-white font-bold text-xl border-1 border-gray-light"
-      >
+      <Button type="submit" className={twMerge(PRIMARY_BUTTON, 'h-14')}>
         Sign In
       </Button>
     </form>

@@ -11,6 +11,8 @@ import ROUTE from '#/constants/route';
 import UserIcon from '#assets/icon/user.svg?react';
 import LogoutIcon from '#assets/icon/logout.svg?react';
 import CIIcon from '#assets/icon/icon.svg?react';
+import { twMerge } from 'tailwind-merge';
+import { HEADER_ICON, HEADER_ICON_BUTTON } from '#/constants/style';
 
 const UserHeader = () => {
   const navigate = useNavigate();
@@ -38,23 +40,15 @@ const UserHeader = () => {
       </div>
       <div className="flex flex-row gap-4">
         <NavLink to={ROUTE.USER}>
-          <div className="bg-secondary-light/50 p-2 rounded-full border-1 hover:bg-secondary-light">
-            <UserIcon
-              width={20}
-              height={20}
-              className="text-gray-600 group-hover:text-white"
-            />
+          <div className={twMerge(HEADER_ICON_BUTTON, 'rounded-full')}>
+            <UserIcon width={20} height={20} className={HEADER_ICON} />
           </div>
         </NavLink>
         <Button
-          className="rounded-md bg-secondary-light/50 p-2 border-1 hover:bg-secondary-light"
+          className={twMerge(HEADER_ICON_BUTTON, 'rounded-md')}
           onClick={handleLogout}
         >
-          <LogoutIcon
-            width={20}
-            height={20}
-            className="text-gray-600 group-hover:text-white"
-          />
+          <LogoutIcon width={20} height={20} className={HEADER_ICON} />
         </Button>
       </div>
     </div>

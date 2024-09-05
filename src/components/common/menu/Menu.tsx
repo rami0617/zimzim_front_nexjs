@@ -14,7 +14,7 @@ const Menu = () => (
       <div className="flex flex-col gap-8 w-5/6 text-gray-600 max-md:items-center">
         <MenuItem to={ROUTE.MAIN_PAGE} title="Dashboard" Icon={ChartIcon} />
         <MenuItem
-          to={ROUTE.EXERCISE.LIST}
+          to={ROUTE.EXERCISE.DEFAULT}
           title="Exercise"
           Icon={ExerciseIcon}
         />
