@@ -119,7 +119,7 @@ const ExerciseTable = ({
           </tbody>
         </table>
       </ContentBox>
-      <div className="pt-8 h-6 flex flex-row justify-end gap-2 items-center ">
+      <div className="pt-8 h-6 flex flex-row justify-end gap-2 items-center">
         {exerciseData && exerciseData?.currentPage > 0 && (
           <Button
             className="bg-white h-6 flex items-center justify-center w-6 rounded-md cursor-pointer"
